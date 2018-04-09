@@ -1,14 +1,15 @@
 module.exports = {
 		createUser,
+    verifyUser
 	}
 
 // Create Functions
 
-function createUser(userRef, id, email, firstname, lastname, phone, password) {
+function createUser(userRef, uid, email, firstname, lastname, phone, password) {
   userRef.update({
-    [id]:"novalue"
+    [uid]:"novalue"
   });
-  userRef.child(id).update({
+  userRef.child(uid).update({
     "email": email,
     "firstname": firstname,
     "lastname": lastname,
@@ -19,7 +20,19 @@ function createUser(userRef, id, email, firstname, lastname, phone, password) {
 
 
 // Read Functions
-
+function verifyUser(userRef, uid, password, callback) {
+  var ref = userRef.child(uid).child("password");
+  var correctPassword;
+  ref.once("value").then(function(snapshot) {
+    correctPassword = snapshot.val();
+    if (password == correctPassword) {
+      callback(true);
+    }
+    else {
+      callback(false);
+    }
+  });
+}
 
 
 // Update Functions

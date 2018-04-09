@@ -46,6 +46,15 @@ var userRef = ref.child("Users");
 
 function test() {
   database.createUser(userRef, "2222", "2222@gmail.com", "Test2", "User2", "4081413392", "something");
+
+  database.verifyUser(userRef, "2222", "something", (x) => {
+    if (x == true) {
+      console.log("Correct Username and Password");
+    }
+    else {
+      console.log("Incorrect Username and Password");
+    }
+  });
 }
 
 //encrypt password
@@ -80,12 +89,39 @@ app.get('/', function(req, res) {
 
 // Create User
 app.post('/CREATE-USER', function (req, res) {
-  var uid = UID(req.email);
+  var uid = UID(req.email); // username is their email
   var encryptedPassword = encrypt(req.password);
   database.createUser(userRef, uid, req.email, req.firstname, req.lastname, req.phone, encryptedPassword);
   res.send(uid);
+  console.log("New User Created");
 });
 
+//login handler
+app.post('/LOGIN', function (req, res) {
+  console.log('Received request for LOGIN:');
+  console.log(req.body);
+
+  //create ENCRYPTED PASSWORD
+  var encryptedPassword = encrypt(req.body.password);
+  var uid = UID(req.body.username); // username is their email
+  console.log(uid);
+
+  database.verifyUser(userRef, uid, encryptedPassword, (x) => {
+    if (x == true) {
+      res.json({
+        "uid": uid,
+        "status": true
+      });
+      console.log("Correct Username and Password");
+    }
+    else {
+      res.json({
+        "status": false
+      });
+      console.log("Incorrect Username and Password");
+    }
+  });
+});
 
 // main function
 app.listen(port, function () {
