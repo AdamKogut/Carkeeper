@@ -1,7 +1,8 @@
 module.exports = {
 		createUser,
     verifyUser,
-    addCar
+    addCar,
+    addService
 	}
 
 // Create Functions
@@ -23,24 +24,6 @@ function createUser(userRef, uid, email, firstname, lastname, phone, password) {
   });
 }
 
-
-// Read Functions
-function verifyUser(userRef, uid, password, callback) {
-  var ref = userRef.child(uid).child("password");
-  var correctPassword;
-  ref.once("value").then(function(snapshot) {
-    correctPassword = snapshot.val();
-    if (password == correctPassword) {
-      callback(true);
-    }
-    else {
-      callback(false);
-    }
-  });
-}
-
-
-// Update Functions
 function addCar(userRef, uid, make, model, year, level) {
   var ref = userRef.child(uid).child("Garage");
   var carCount;
@@ -65,3 +48,43 @@ function addCar(userRef, uid, make, model, year, level) {
     });
   });
 }
+
+function addService(userRef, uid, carNumber, serviceName, priorDate, nextDate, increment) {
+  var car = "Car" + carNumber;
+  console.log("Car: " + car);
+  var ref = userRef.child(uid).child("Garage").child(car).child("Service List");
+  ref.once("value").then(function(snapshot){
+    serviceCount = snapshot.val().serviceCount + 1;
+    console.log("Service Count");
+    console.log(serviceCount);
+    var newService = "Service" + serviceCount;
+    ref.update({
+      "serviceCount": serviceCount,
+      [newService]: ""
+    })
+    ref.child(newService).update({
+      "serviceName": serviceName,
+      "priorDate": priorDate,
+      "nextDate": nextDate,
+      "increment": increment
+    })
+  });
+}
+
+// Read Functions
+function verifyUser(userRef, uid, password, callback) {
+  var ref = userRef.child(uid).child("password");
+  var correctPassword;
+  ref.once("value").then(function(snapshot) {
+    correctPassword = snapshot.val();
+    if (password == correctPassword) {
+      callback(true);
+    }
+    else {
+      callback(false);
+    }
+  });
+}
+
+
+// Update Functions

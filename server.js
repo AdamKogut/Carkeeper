@@ -59,7 +59,11 @@ function test() {
 
    database.addCar(userRef, "1111", "make", "model", "year", "level");
    database.addCar(userRef, "1111", "make2", "model2", "year2", "level2");
-   database.addCar(userRef, "2222", "make", "model", "year", "level");*/
+   database.addCar(userRef, "2222", "make", "model", "year", "level");
+
+   database.addService(userRef, "1111", "1", "oil", "1/10/18", "7/10/18", "6 months");
+   database.addService(userRef, "1111", "1", "tires", "3/10/18", "6/10/18", "3 months");
+   database.addService(userRef, "2222", "1", "battery", "12/10/17", "4/10/18", "4 months");*/
 }
 
 //encrypt password
@@ -128,10 +132,17 @@ app.post('/LOGIN', function (req, res) {
   });
 });
 
-// Add Car addCar(userRef, uid, make, model, year, level)
+// Add Car
 app.post('/ADD-CAR', function (req, res) {
   database.addCar(userRef, req.uid, req.make, req.model, req.year, req.level);
   console.log("New Car Added");
+});
+
+// Add Service  addService(userRef, uid, carNumber, serviceName, priorDate, nextDate, increment) {
+app.post('/ADD-SERVICE', function (req, res) {
+  // For now, nextDate and increment is unknown until we can use an API or have general increments
+  database.addService(userRef, req.uid, req.carNumber, req.serviceName, req.priorDate, "nextDate", "increment");
+  console.log("New service added");
 });
 
 // main function
