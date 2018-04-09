@@ -1,3 +1,7 @@
+module.exports = {
+		createUser,
+	}
+
 // Create Functions
 
 function createUser(userRef, id, email, firstname, lastname, phone, password) {
