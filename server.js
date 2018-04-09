@@ -45,6 +45,7 @@ var ref = admin.database().ref();
 var userRef = ref.child("Users");
 
 function test() {
+  /*database.createUser(userRef, "1111", "1111@gmail.com", "Test", "User", "4081417392", "something");
   database.createUser(userRef, "2222", "2222@gmail.com", "Test2", "User2", "4081413392", "something");
 
   database.verifyUser(userRef, "2222", "something", (x) => {
@@ -55,13 +56,17 @@ function test() {
       console.log("Incorrect Username and Password");
     }
   });
+
+   database.addCar(userRef, "1111", "make", "model", "year", "level");
+   database.addCar(userRef, "1111", "make2", "model2", "year2", "level2");
+   database.addCar(userRef, "2222", "make", "model", "year", "level");*/
 }
 
 //encrypt password
 function encrypt(password) {
   var cipher = password;
   var actual = "";
-  for(i = 0; i < password.length;i++) {
+  for(i = 0; i < password.length; i++) {
     //console.log((password.charCodeAt(i)*941)%16);
     actual = actual + ((password.charCodeAt(i)*941)%16).toString(16);
   }
@@ -121,6 +126,12 @@ app.post('/LOGIN', function (req, res) {
       console.log("Incorrect Username and Password");
     }
   });
+});
+
+// Add Car addCar(userRef, uid, make, model, year, level)
+app.post('/ADD-CAR', function (req, res) {
+  database.addCar(userRef, req.uid, req.make, req.model, req.year, req.level);
+  console.log("New Car Added");
 });
 
 // main function
