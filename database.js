@@ -3,7 +3,8 @@ module.exports = {
     verifyUser,
     addCar,
     addService,
-    getGarage
+    getGarage,
+    getCar
 	}
 
 // Create Functions
@@ -81,8 +82,6 @@ function verifyUser(userRef, uid, password, callback) {
   });
 }
 
-
-// Update Functions
 function getGarage(userRef, uid, callback) {
   var ref = userRef.child(uid).child("Garage");
   var json = {};
@@ -97,6 +96,25 @@ function getGarage(userRef, uid, callback) {
           json[key]["year"] = childSnapshot.val().year;
         }
       });
-    callback(json); // callback needs to occur after iterating over all cars in garage
+    callback(json);
   });
 }
+
+function getCar(userRef, uid, carName, callback) {
+  var ref = userRef.child(uid).child("Garage").child(carName).child("Service List");
+  var json = {};
+  ref.once("value").then(function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        var key = childSnapshot.key;
+        if (key != "serviceCount") {
+          json[key] = {};
+          json[key]["increment"] = childSnapshot.val().increment;
+          json[key]["nextDate"] = childSnapshot.val().nextDate;
+          json[key]["priorDate"] = childSnapshot.val().priorDate;
+        }
+      });
+    callback(json);
+  });
+}
+
+// Update Functions

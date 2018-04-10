@@ -64,13 +64,18 @@ function test() {
    database.addService(userRef, "1111", "My First car", "oil", "1/10/18", "7/10/18", "6 months");
    database.addService(userRef, "1111", "My First car", "tires", "3/10/18", "6/10/18", "3 months");
    database.addService(userRef, "2222", "My First car", "battery", "12/10/17", "4/10/18", "4 months");
-*/
+
   database.getGarage(userRef, "1111", (x) => {
     console.log(x);
   });
   database.getGarage(userRef, "2222", (x) => {
     console.log(x);
+  });*/
+
+  database.getCar(userRef, "1111", "My First car", (x) => {
+    console.log(x);
   });
+
 }
 
 //encrypt password
@@ -150,6 +155,13 @@ app.post('/ADD-SERVICE', function (req, res) {
   // For now, nextDate and increment is unknown until we can use an API or have general increments
   database.addService(userRef, req.uid, req.carNumber, req.serviceName, req.priorDate, "nextDate", "increment");
   console.log("New service added");
+});
+
+app.post('/GET-GARAGE', function (req, res) {
+  database.getGarage(userRef, req.uid, (x) => {
+    res.send(x);
+  })
+  console.log("Get Garage request");
 });
 
 // main function
