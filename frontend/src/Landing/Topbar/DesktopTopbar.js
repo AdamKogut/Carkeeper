@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 import { NavLink, Switch, Route } from 'react-router-dom'
 import { Toolbar, ToolbarGroup } from 'material-ui';
-//import './LandingScreen.css';
+import './Topbar.css';
 
-class LandingScreen extends Component {
+class DesktopTopbar extends Component {
   constructor(props) {
     super(props)
-    console.log('hi')
   }
 
   render() {
     return (
       <Toolbar 
-        style={{backgroundColor:'#946AB4', color:'#F6F5F5'}}
+        style={{backgroundColor:'#CA437E', color:'#F8FBF5'}}
+        className='desktop-bar'
       >
         <ToolbarGroup>
-          <h1>CarKeeper</h1>
+          <h1 className='desktop-topbar-title'>CarKeeper</h1>
         </ToolbarGroup>
       </Toolbar>
     );
   }
 }
 
-export default LandingScreen;
+export default DesktopTopbar;
