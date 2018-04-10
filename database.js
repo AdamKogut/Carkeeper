@@ -60,7 +60,7 @@ function addService(userRef, uid, carName, serviceName, priorDate, nextDate, inc
       [serviceName]: ""
     })
     ref.child(serviceName).update({
-      "priorDate": priorDate,
+      "priorDates": priorDate,
       "nextDate": nextDate,
       "increment": increment
     })
@@ -110,7 +110,9 @@ function getCar(userRef, uid, carName, callback) {
           json[key] = {};
           json[key]["increment"] = childSnapshot.val().increment;
           json[key]["nextDate"] = childSnapshot.val().nextDate;
-          json[key]["priorDate"] = childSnapshot.val().priorDate;
+          childSnapshot.forEach(function(babySnapshot) {
+            json[key]["priorDates"] = babySnapshot.val();
+          });
         }
       });
     callback(json);

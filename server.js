@@ -61,21 +61,21 @@ function test() {
    database.addCar(userRef, "1111", "My Second car", "make2", "model2", "year2", "level2");
    database.addCar(userRef, "2222", "My First car", "make", "model", "year", "level");
 
-   database.addService(userRef, "1111", "My First car", "oil", "1/10/18", "7/10/18", "6 months");
-   database.addService(userRef, "1111", "My First car", "tires", "3/10/18", "6/10/18", "3 months");
-   database.addService(userRef, "2222", "My First car", "battery", "12/10/17", "4/10/18", "4 months");
+   database.addService(userRef, "1111", "My First car", "oil", ["1/10/18", "7/12/17"], "7/10/18", "6 months");
+   database.addService(userRef, "1111", "My First car", "tires", ["3/10/18"], "6/10/18", "3 months");
+   database.addService(userRef, "2222", "My First car", "battery", ["12/10/17", "5/7/17"], "4/10/18", "4 months");
 
   database.getGarage(userRef, "1111", (x) => {
     console.log(x);
   });
   database.getGarage(userRef, "2222", (x) => {
     console.log(x);
-  });*/
+  });
 
   database.getCar(userRef, "1111", "My First car", (x) => {
     console.log(x);
   });
-
+*/
 }
 
 //encrypt password
@@ -162,6 +162,13 @@ app.post('/GET-GARAGE', function (req, res) {
     res.send(x);
   })
   console.log("Get Garage request");
+});
+
+app.post('/GET-CAR', function (req, res) {
+  database.getCar(userRef, req.uid, req.carName, (x) => {
+    res.send(x);
+  });
+  console.log("Get Car request");
 });
 
 // main function
