@@ -24,7 +24,7 @@ var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
     // intercept OPTIONS method
-    if ('OPTIONS' == req.method) {
+    if ('OPTIONS' == req.body.method) {
       res.send(200);
     }
     else {
@@ -116,9 +116,9 @@ app.get('/', function(req, res) {
 
 // Create User
 app.post('/CREATE-USER', function (req, res) {
-  var uid = UID(req.email); // username is their email
-  var encryptedPassword = encrypt(req.password);
-  database.createUser(userRef, uid, req.email, req.firstname, req.lastname, req.phone, encryptedPassword);
+  var uid = UID(req.body.email); // username is their email
+  var encryptedPassword = encrypt(req.body.password);
+  database.createUser(userRef, uid, req.body.email, req.body.firstname, req.body.lastname, req.body.phone, encryptedPassword);
   res.send(uid);
   console.log("New User Created");
 });
@@ -152,38 +152,38 @@ app.post('/LOGIN', function (req, res) {
 
 // Add Car
 app.post('/ADD-CAR', function (req, res) {
-  database.addCar(userRef, req.uid, req.make, req.model, req.year, req.level);
+  database.addCar(userRef, req.body.uid, req.body.make, req.body.model, req.body.year, req.body.level);
   console.log("New Car Added");
 });
 
 // Add Service  addService(userRef, uid, carNumber, serviceName, priorDate, nextDate, increment) {
 app.post('/ADD-SERVICE', function (req, res) {
   // For now, nextDate and increment is unknown until we can use an API or have general increments
-  database.addService(userRef, req.uid, req.carName, req.serviceName, req.priorDate, "nextDate", "increment");
+  database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, req.body.priorDate, "nextDate", "increment");
   console.log("New service added");
 });
 
 app.post('/GET-GARAGE', function (req, res) {
-  database.getGarage(userRef, req.uid, (x) => {
+  database.getGarage(userRef, req.body.uid, (x) => {
     res.send(x);
   })
   console.log("Get Garage request");
 });
 
 app.post('/GET-CAR', function (req, res) {
-  database.getCar(userRef, req.uid, req.carName, (x) => {
+  database.getCar(userRef, req.body.uid, req.body.carName, (x) => {
     res.send(x);
   });
   console.log("Get Car request");
 });
 
 app.post('/REMOVE-SERVICE', function (req, res) {
-  database.removeService(userRef, req.uid, req.carName, req.serviceName);
+  database.removeService(userRef, req.body.uid, req.body.carName, req.body.serviceName);
   console.log("Service Removed");
 });
 
 app.post('/REMOVE-CAR', function (req, res) {
-  database.removeService(userRef, req.uid, req.carName);
+  database.removeService(userRef, req.body.uid, req.body.carName);
   console.log("Car Removed");
 });
 
