@@ -77,7 +77,10 @@ function test() {
   });
 
   database.removeService(userRef, "1111", "My First car", "oil");
-  */
+
+  database.removeCar(userRef, "1111", "My First car");
+  database.removeCar(userRef, "2222", "My First car");
+*/
 
 }
 
@@ -177,6 +180,11 @@ app.post('/GET-CAR', function (req, res) {
 app.post('/REMOVE-SERVICE', function (req, res) {
   database.removeService(userRef, req.uid, req.carName, req.serviceName);
   console.log("Service Removed");
+});
+
+app.post('/REMOVE-CAR', function (req, res) {
+  database.removeService(userRef, req.uid, req.carName);
+  console.log("Car Removed");
 });
 
 // main function

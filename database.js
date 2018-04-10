@@ -5,7 +5,8 @@ module.exports = {
     addService,
     getGarage,
     getCar,
-    removeService
+    removeService,
+    removeCar
 	}
 
 // Create Functions
@@ -83,6 +84,7 @@ function verifyUser(userRef, uid, password, callback) {
   });
 }
 
+// Returns all cars in user's Garage
 function getGarage(userRef, uid, callback) {
   var ref = userRef.child(uid).child("Garage");
   var json = {};
@@ -101,6 +103,7 @@ function getGarage(userRef, uid, callback) {
   });
 }
 
+// Returns all services for a car in json
 function getCar(userRef, uid, carName, callback) {
   var ref = userRef.child(uid).child("Garage").child(carName).child("Service List");
   var json = {};
@@ -132,4 +135,16 @@ function removeService(userRef, uid, carName, serviceName) {
     });
   });
   ref.child(serviceName).remove();
+}
+
+function removeCar(userRef, uid, carName) {
+  var ref = userRef.child(uid).child("Garage");
+  var carCount;
+  ref.once("value").then(function(snapshot){
+    carCount = snapshot.val().carCount - 1;
+    ref.update({
+      "carCount": carCount,
+    });
+  });
+  ref.child(carName).remove();
 }
