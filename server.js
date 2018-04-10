@@ -65,6 +65,12 @@ function test() {
    database.addService(userRef, "1111", "My First car", "tires", "3/10/18", "6/10/18", "3 months");
    database.addService(userRef, "2222", "My First car", "battery", "12/10/17", "4/10/18", "4 months");
 */
+  database.getGarage(userRef, "1111", (x) => {
+    console.log(x);
+  });
+  database.getGarage(userRef, "2222", (x) => {
+    console.log(x);
+  });
 }
 
 //encrypt password

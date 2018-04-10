@@ -2,7 +2,8 @@ module.exports = {
 		createUser,
     verifyUser,
     addCar,
-    addService
+    addService,
+    getGarage
 	}
 
 // Create Functions
@@ -82,3 +83,20 @@ function verifyUser(userRef, uid, password, callback) {
 
 
 // Update Functions
+function getGarage(userRef, uid, callback) {
+  var ref = userRef.child(uid).child("Garage");
+  var json = {};
+  ref.once("value").then(function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        var key = childSnapshot.key;
+        if (key != "carCount") {
+          json[key] = {};
+          json[key]["make"] = childSnapshot.val().make;
+          json[key]["model"] = childSnapshot.val().model;
+          json[key]["level"] = childSnapshot.val().level;
+          json[key]["year"] = childSnapshot.val().year;
+        }
+      });
+    callback(json); // callback needs to occur after iterating over all cars in garage
+  });
+}
