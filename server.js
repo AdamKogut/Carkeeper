@@ -57,13 +57,14 @@ function test() {
     }
   });
 
-   database.addCar(userRef, "1111", "make", "model", "year", "level");
-   database.addCar(userRef, "1111", "make2", "model2", "year2", "level2");
-   database.addCar(userRef, "2222", "make", "model", "year", "level");
+   database.addCar(userRef, "1111", "My First car", "make", "model", "year", "level");
+   database.addCar(userRef, "1111", "My Second car", "make2", "model2", "year2", "level2");
+   database.addCar(userRef, "2222", "My First car", "make", "model", "year", "level");
 
-   database.addService(userRef, "1111", "1", "oil", "1/10/18", "7/10/18", "6 months");
-   database.addService(userRef, "1111", "1", "tires", "3/10/18", "6/10/18", "3 months");
-   database.addService(userRef, "2222", "1", "battery", "12/10/17", "4/10/18", "4 months");*/
+   database.addService(userRef, "1111", "My First car", "oil", "1/10/18", "7/10/18", "6 months");
+   database.addService(userRef, "1111", "My First car", "tires", "3/10/18", "6/10/18", "3 months");
+   database.addService(userRef, "2222", "My First car", "battery", "12/10/17", "4/10/18", "4 months");
+*/
 }
 
 //encrypt password
