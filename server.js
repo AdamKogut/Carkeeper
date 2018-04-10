@@ -75,7 +75,10 @@ function test() {
   database.getCar(userRef, "1111", "My First car", (x) => {
     console.log(x);
   });
-*/
+
+  database.removeService(userRef, "1111", "My First car", "oil");
+  */
+
 }
 
 //encrypt password
@@ -153,7 +156,7 @@ app.post('/ADD-CAR', function (req, res) {
 // Add Service  addService(userRef, uid, carNumber, serviceName, priorDate, nextDate, increment) {
 app.post('/ADD-SERVICE', function (req, res) {
   // For now, nextDate and increment is unknown until we can use an API or have general increments
-  database.addService(userRef, req.uid, req.carNumber, req.serviceName, req.priorDate, "nextDate", "increment");
+  database.addService(userRef, req.uid, req.carName, req.serviceName, req.priorDate, "nextDate", "increment");
   console.log("New service added");
 });
 
@@ -169,6 +172,11 @@ app.post('/GET-CAR', function (req, res) {
     res.send(x);
   });
   console.log("Get Car request");
+});
+
+app.post('/REMOVE-SERVICE', function (req, res) {
+  database.removeService(userRef, req.uid, req.carName, req.serviceName);
+  console.log("Service Removed");
 });
 
 // main function

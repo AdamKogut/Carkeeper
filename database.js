@@ -4,7 +4,8 @@ module.exports = {
     addCar,
     addService,
     getGarage,
-    getCar
+    getCar,
+    removeService
 	}
 
 // Create Functions
@@ -120,3 +121,15 @@ function getCar(userRef, uid, carName, callback) {
 }
 
 // Update Functions
+
+function removeService(userRef, uid, carName, serviceName) {
+  var ref = userRef.child(uid).child("Garage").child(carName).child("Service List");
+  var serviceCount;
+  ref.once("value").then(function(snapshot){
+    serviceCount = snapshot.val().serviceCount - 1;
+    ref.update({
+      "serviceCount": serviceCount,
+    });
+  });
+  ref.child(serviceName).remove();
+}
