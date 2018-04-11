@@ -168,8 +168,37 @@ app.post('/ADD-CAR', function (req, res) {
 // Add Service  addService(userRef, uid, carNumber, serviceName, priorDate, nextDate, increment) {
 app.post('/ADD-SERVICE', function (req, res) {
   console.log("Received request to add service");
-  // For now, nextDate and increment is unknown until we can use an API or have general increments
-  database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, req.body.priorDate, "nextDate", "increment");
+  // Find increment using lists and set next Date
+  var nextDate, increment, incrementInt;
+  if (threeMonthServices.includes(req.body.serviceName)) {
+    increment = "3 months";
+    incrementInt = 3;
+  } else if (sixMonthServices.includes(req.body.serviceName)) {
+    increment = "6 months";
+    incrementInt = 6;
+  } else {
+    increment = "12 months";
+    incrementInt = 12;
+  }
+  console.log("Increment :" + increment);
+  nextDate = "nextDate";
+  console.log("Next Date: " + nextDate);
+  database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, req.body.priorDate, nextDate, increment);
+  console.log("New service added");
+});
+
+app.post('/ADD-CUSTOM-SERVICE', function (req, res) {
+  console.log("Received request to add service");
+  // Find increment using lists and set next Date
+  var nextDate, increment;
+  if (req.body.increment === "undefined") {
+    increment = "3 months";
+  } else {
+    increment = req.body.increment;
+  }
+  console.log(increment);
+  nextDate = "nextDate";
+  database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, req.body.priorDate, nextDate, increment);
   console.log("New service added");
 });
 
