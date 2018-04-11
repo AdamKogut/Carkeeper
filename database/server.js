@@ -44,6 +44,12 @@ admin.initializeApp({
 var ref = admin.database().ref();
 var userRef = ref.child("Users");
 
+// Service Lists
+var allServices = ["Automatic Transmission Fluid", "Battery and Cables", "Belts", "Dashboard Indicator Light On", "Engine Air Filter", "Engine Oil", "Exhaust", "Hoses", "Lights", "Power Steering Fluid", "Tire Inflation and Condition", "Windshield Washer Fluid", "Chassis Lubrication", "Wiper Blades", "Brakes", "Cabin Air Filter", "Coolant", "Steering and Suspension", "Wheel Alignment"];
+var threeMonthServices = ["Automatic Transmission Fluid", "Battery and Cables", "Belts", "Dashboard Indicator Light On", "Engine Air Filter", "Engine Oil", "Exhaust", "Hoses", "Lights", "Power Steering Fluid", "Tire Inflation and Condition", "Windshield Washer Fluid"];
+var sixMonthServices = ["Chassis Lubrication", "Wiper Blades"];
+var twelveMonthServices = ["Brakes", "Cabin Air Filter", "Coolant", "Steering and Suspension", "Wheel Alignment"];
+
 function test() {
   /*database.createUser(userRef, "1111", "1111@gmail.com", "Test", "User", "4081417392", "something");
   database.createUser(userRef, "2222", "2222@gmail.com", "Test2", "User2", "4081413392", "something");
@@ -199,6 +205,12 @@ app.post('/UPDATE-CAR', function (req, res) {
   console.log("Request to remove car received");
   database.updateCar(userRef, req.body.uid, req.body.carName, req.body.make, req.body.model, req.body.year, req.body.level);
   console.log("Car Removed");
+});
+
+app.post('/GET-ALL-SERVICES', function (req, res) {
+  console.log("Request to get all services received");
+  res.send(allServices);
+  console.log("Returned all services");
 });
 
 // main function
