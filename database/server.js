@@ -91,8 +91,11 @@ function test() {
 
   database.addPriorDate(userRef, "1111", "My First car", "Engine Oil", "2019-1-15");
   database.updateNextDate(userRef, "1111", "My First car", "Engine Oil", "2019-1-15");
+
+  database.getIncrement(userRef, "1111", "My First car", "Engine Oil", (x) => {
+    console.log(x);
+  });
   */
-  
 }
 
 //encrypt password
@@ -286,16 +289,36 @@ app.post('/GET-ALL-SERVICES', function (req, res) {
   console.log("Returned all services");
 });
 
+
 app.post('/ADD-PRIOR-DATE', function (req, res) {
   console.log("Request to all prior date received");
   // Add Prior date to Prior Dates list
+  database.addPriorDate(userRef, req.body.uid, req.body.carName, req.body.serviceName, req.body.priorDate);
 
-  // Update Next Date
+  // Add Increment to Months
+  database.getIncrement(userRef, req.body.uid, req.body.carName, req.body.serviceName, (incrementInt) => {
+    // Update Next Date
+    var dates = req.body.priorDate.split("-");
+    for( var i = 0; i < dates.length; i++) {
+      dates[i] = +dates[i];
+    }
 
-  res.json({
-    "status": true
+    console.log("Increment: " + incrementInt);
+    dates[1] += incrementInt;
+    if (dates[1] > 12) {
+      dates[1] -= 12;
+      dates[0] += 1;
+    }
+    var nextDate = dates[0] + "-" + dates[1] + "-" + dates[2];
+    console.log("Next Date: " + nextDate);
+
+    database.updateNextDate(userRef, req.body.uid, req.body.carName, req.body.serviceName, nextDate);
+
+    res.json({
+      "status": true
+    });
+    console.log("Prior date added and next date updated");
   });
-  console.log("Prior date added and next date updated");
 });
 
 // main function

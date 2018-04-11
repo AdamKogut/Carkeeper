@@ -9,7 +9,8 @@ module.exports = {
     removeCar,
     updateCar,
     addPriorDate,
-    updateNextDate
+    updateNextDate,
+    getIncrement
 	}
 
 // Create Functions
@@ -123,6 +124,15 @@ function getCar(userRef, uid, carName, callback) {
         }
       });
     callback(json);
+  });
+}
+
+function getIncrement(userRef, uid, carName, serviceName, callback) {
+  var ref = userRef.child(uid).child("Garage").child(carName).child("Service List").child(serviceName);
+  ref.once("value").then(function(snapshot){
+    // Parse increment and return value as int
+    var increment = snapshot.val().increment.split(" ");
+    callback(+increment[0]);
   });
 }
 
