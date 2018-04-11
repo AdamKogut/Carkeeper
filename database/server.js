@@ -191,7 +191,7 @@ app.post('/REMOVE-SERVICE', function (req, res) {
 
 app.post('/REMOVE-CAR', function (req, res) {
   console.log("Received request to remove car");
-  database.removeService(userRef, req.body.uid, req.body.carName);
+  database.removeCar(userRef, req.body.uid, req.body.carName);
   console.log("Car Removed");
 });
 
