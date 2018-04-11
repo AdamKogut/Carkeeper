@@ -181,7 +181,17 @@ app.post('/ADD-SERVICE', function (req, res) {
     incrementInt = 12;
   }
   console.log("Increment :" + increment);
-  nextDate = "nextDate";
+  var dates = req.body.priorDate.split("-");
+  for( var i = 0; i < dates.length; i++) {
+    dates[i] = +dates[i];
+  }
+  // Add Increment to Months
+  dates[1] += incrementInt;
+  if (dates[1] > 12) {
+    dates[1] -= 12;
+    dates[0] += 1;
+  }
+  nextDate = dates[0] + "-" + dates[1] + "-" + dates[2];
   console.log("Next Date: " + nextDate);
   database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, req.body.priorDate, nextDate, increment);
   console.log("New service added");
