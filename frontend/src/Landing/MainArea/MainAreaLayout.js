@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Col, Row } from 'react-bootstrap'
 import axios from 'axios'
 import DeleteCarButton from './DeleteCarButton'
+import AddServiceButton from './AddServiceButton'
+import AddDate from './AddDate'
 import './MainArea.css';
 import { Card, CardHeader, CardText, CardActions, FlatButton } from 'material-ui';
 
@@ -14,11 +16,13 @@ class MainAreaLayout extends Component {
       day: today.getDate(),
       month: today.getMonth() + 1,
       year: today.getFullYear(),
+      objectItem:'',
+      addOpen:false,
       warning: [
         { openIcon: <i className="material-icons warning">&#xE002;</i>, closeIcon: <i className="material-icons warning">&#xE002;</i> },
       ]
     }
-    console.log(props)
+    // console.log(props)
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -44,7 +48,7 @@ class MainAreaLayout extends Component {
             let tempPrior = []
             for (let k in response.data[i].priorDates) {
               tempPrior.push(
-                <h6 key={i}>{response.data[i].priorDates[k]}</h6>
+                <h6 key={k}>{response.data[i].priorDates[k]}</h6>
               )
             }
             // console.log(tempPrior.length)
@@ -98,7 +102,11 @@ class MainAreaLayout extends Component {
   }
 
   handleAdd = (name) => {
+    this.setState({addOpen:true, objectItem:name})
+  }
 
+  closeAdd=()=>{
+    this.setState({addOpen:false, objectItem:''})
   }
 
   handleRemove = (name) => {
@@ -131,6 +139,8 @@ class MainAreaLayout extends Component {
           : null}
         {this.state.cards}
         <DeleteCarButton {...this.props}/>
+        <AddServiceButton {...this.props}/>
+        <AddDate {...this.props} {...this.state} closeAdd={this.closeAdd}/>
       </Col>
     );
   }

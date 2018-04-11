@@ -1,13 +1,20 @@
 .main-desktop{
   height:calc(100vh - 57px);
   text-align: left;
-
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .delete-car-main{
   position: absolute;
   top:20px;
   right:20px;
+}
+
+.add-car-main{
+  position: absolute;
+  top:60px;
+  right:17px;
 }
 
 .warning{
