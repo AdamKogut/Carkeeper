@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { NavLink, Switch, Route } from 'react-router-dom'
 import { Col } from 'react-bootstrap'
 import axios from 'axios'
-import { Paper, ListItem, IconMenu, MenuItem, IconButton } from 'material-ui';
-import DeleteCar from './DeleteCar'
+import { Paper, ListItem } from 'material-ui';
+import AddCarButton from './AddCarButton'
 import './Sidebar.css';
 
 class DesktopSidebar extends Component {
@@ -81,6 +80,7 @@ class DesktopSidebar extends Component {
     return (
       <Col xsHidden sm={3} className='desktop-sidebar'>
         {this.state.cars}
+        <AddCarButton {...this.props} />
       </Col>
     );
   }

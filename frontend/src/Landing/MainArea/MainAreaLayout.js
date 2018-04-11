@@ -124,9 +124,6 @@ class MainAreaLayout extends Component {
   }
 
   render() {
-    let height = window.innerHeight
-      || document.documentElement.clientHeight
-      || document.body.clientHeight;
     return (
       <Col sm={9} className='main-desktop'>
         <Row style={{ marginLeft: '20px' }}>

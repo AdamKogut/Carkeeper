@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { NavLink, Switch, Route } from 'react-router-dom'
 import { Toolbar, ToolbarGroup } from 'material-ui';
 import './Topbar.css';
 

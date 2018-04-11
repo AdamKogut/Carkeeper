@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink, Switch, Route } from 'react-router-dom'
-import { Row, Col } from 'react-bootstrap'
+import { Row } from 'react-bootstrap'
 import Sidebar from './Sidebar/SidebarLayout'
 import Topbar from './Topbar/TopbarLayout'
 import MainArea from './MainArea/MainAreaLayout'

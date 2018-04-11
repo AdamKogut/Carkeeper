@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
-import {NavLink, Switch, Route} from 'react-router-dom'
 import { Dialog, RaisedButton } from 'material-ui';
 import axios from 'axios'
 //import './DeleteCar.css';
 
 class DeleteCar extends Component {
-  constructor(props){
-    super(props)
-  }
-
   deleteCar=()=>{
     // console.log(this.props.objectItem)
-    let that = this
     axios.post('/REMOVE-CAR', {
       "uid": this.props.uid,
       carName:this.props.objectItem,

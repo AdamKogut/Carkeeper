@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { NavLink, Switch, Route } from 'react-router-dom'
 import MobileTopbar from './MobileTopbar'
 import DesktopTopbar from './DesktopTopbar'
 //import './TopbarLayout.css';

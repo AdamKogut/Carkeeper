@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {NavLink, Switch, Route} from 'react-router-dom'
 import MobileSidebar from './MobileSidebar'
 import DesktopSidebar from './DesktopSidebar'
 //import './LandingScreen.css';

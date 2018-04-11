@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {NavLink, Switch, Route} from 'react-router-dom'
 import { Dialog, RaisedButton, DatePicker } from 'material-ui';
 //import './AddDate.css';
 

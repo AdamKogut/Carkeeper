@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-//import './LandingScreen.css';
+//import './AddCarButton.css';
 
-class LandingScreen extends Component {
+class AddCarButton extends Component {
   render() {
     return (
       <div>
@@ -10,4 +10,4 @@ class LandingScreen extends Component {
   }
 }
 
-export default LandingScreen;
+export default AddCarButton;
