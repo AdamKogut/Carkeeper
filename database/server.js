@@ -165,12 +165,15 @@ app.post('/ADD-CAR', function (req, res) {
   console.log("New Car Added");
 });
 
-// Add Service  addService(userRef, uid, carNumber, serviceName, priorDate, nextDate, increment) {
+// Add Service  addService(userRef, uid, carName, serviceName, priorDate, nextDate, increment) {
 app.post('/ADD-SERVICE', function (req, res) {
   console.log("Received request to add service");
   // Find increment using lists and set next Date
   var nextDate, increment, incrementInt;
-  if (threeMonthServices.includes(req.body.serviceName)) {
+  if (req.body.incrementInt != "undefined") {
+      incrementInt = req.body.incrementInt;
+      increment = incrementInt + " months";
+  } else if (threeMonthServices.includes(req.body.serviceName)) {
     increment = "3 months";
     incrementInt = 3;
   } else if (sixMonthServices.includes(req.body.serviceName)) {
@@ -180,7 +183,9 @@ app.post('/ADD-SERVICE', function (req, res) {
     increment = "12 months";
     incrementInt = 12;
   }
-  console.log("Increment :" + increment);
+  console.log("Increment: " + increment);
+
+  // Use prior date to calculate next date
   var dates = req.body.priorDate.split("-");
   for( var i = 0; i < dates.length; i++) {
     dates[i] = +dates[i];
@@ -193,27 +198,51 @@ app.post('/ADD-SERVICE', function (req, res) {
   }
   nextDate = dates[0] + "-" + dates[1] + "-" + dates[2];
   console.log("Next Date: " + nextDate);
-  database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, req.body.priorDate, nextDate, increment);
+
+  database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, [req.body.priorDate], nextDate, increment);
+  res.json({
+    "status": true
+  });
   console.log("New service added");
 });
 
 app.post('/ADD-CUSTOM-SERVICE', function (req, res) {
-  console.log("Received request to add service");
+  console.log("Received request to add custom service");
   // Find increment using lists and set next Date
-  var nextDate, increment;
-  if (req.body.increment === "undefined") {
-    increment = "3 months";
+  var nextDate, increment, incrementInt;
+  if (req.body.incrementInt != "undefined") {
+    incrementInt = req.body.incrementInt;
+    increment = incrementInt + " months";
   } else {
-    increment = req.body.increment;
+    increment = "3 months";
+    incrementInt = 3;
   }
-  console.log(increment);
-  nextDate = "nextDate";
-  database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, req.body.priorDate, nextDate, increment);
-  console.log("New service added");
+  console.log("Increment: " + increment);
+
+  // Use prior date to calculate next date
+  var dates = req.body.priorDate.split("-");
+  for( var i = 0; i < dates.length; i++) {
+    dates[i] = +dates[i];
+  }
+  // Add Increment to Months
+  dates[1] += incrementInt;
+  if (dates[1] > 12) {
+    dates[1] -= 12;
+    dates[0] += 1;
+  }
+  nextDate = dates[0] + "-" + dates[1] + "-" + dates[2];
+  console.log("Next Date: " + nextDate);
+
+  database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, [req.body.priorDate], nextDate, increment);
+  res.json({
+    "status": true
+  });
+  console.log("New custom service added");
 });
 
 app.post('/GET-GARAGE', function (req, res) {
   console.log("Received request to get Garage");
+  //console.log("UID: " + req.body.uid);
   database.getGarage(userRef, req.body.uid, (x) => {
     res.send(x);
   })
@@ -222,6 +251,7 @@ app.post('/GET-GARAGE', function (req, res) {
 
 app.post('/GET-CAR', function (req, res) {
   console.log("Received request to get Car");
+  console.log(req.body);
   database.getCar(userRef, req.body.uid, req.body.carName, (x) => {
     res.send(x);
   });
@@ -268,6 +298,7 @@ app.listen(port, function () {
 // error handler
 app.use(function (err, req, res, next) {
   console.error(err);
+  console.log(req.body);
   res.json({
     "status": false,
     "error": 'Error, check server for more details',
