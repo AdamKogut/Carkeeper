@@ -11,11 +11,12 @@ class LandingLayout extends Component {
     super(props)
     this.state={
       currCar:'',
+      carInfo:{},
     }
   }
 
-  changeChat=(name)=>{
-    this.setState({currCar:name})
+  changeChat=(name, info)=>{
+    this.setState({currCar:name, carInfo:info})
   }
 
   render() {

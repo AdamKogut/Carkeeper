@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { NavLink, Switch, Route } from 'react-router-dom'
 import { Col } from 'react-bootstrap'
 import axios from 'axios'
-import { Paper, ListItem } from 'material-ui';
+import { Paper, ListItem, IconMenu, MenuItem, IconButton } from 'material-ui';
+import DeleteCar from './DeleteCar'
 import './Sidebar.css';
 
 class DesktopSidebar extends Component {
@@ -11,14 +12,17 @@ class DesktopSidebar extends Component {
     this.state = {
       cars: [],
       colors: [],
+      deleteOpen: false,
+      editOpen: false,
+      objectItem: '',
     }
   }
 
-  handleClick = (name) => {
+  handleClick = (name, info) => {
     let tempColor = []
     tempColor[name] = { style: { backgroundColor: '#CCC' } }
     // console.log(tempColor)
-    this.props.changeChat(name)
+    this.props.changeChat(name, info)
     this.setState({ colors: tempColor }, this.changeColor)
   }
 
@@ -33,6 +37,7 @@ class DesktopSidebar extends Component {
             secondaryText={this.state.cars[i].props.children.props.secondaryText}
             className={this.state.cars[i].props.children.props.className}
             onClick={this.state.cars[i].props.children.props.onClick}
+            rightIcon={this.state.cars[i].props.children.props.rightIcon}
             // hoverColor='#F95498B0'
             {...this.state.colors[this.state.cars[i].key]}
           />
@@ -45,17 +50,17 @@ class DesktopSidebar extends Component {
   componentDidMount = () => {
     let that = this
     axios.post('/GET-GARAGE', {
-      "uid": '1111',
+      "uid": this.props.uid,
     }).then(function (response) {
       // console.log(response.data);
       if (response.data.status != false) {
         let tempCars = []
         for (let i in response.data) {
-          console.log(i)
+          // console.log(i)
           tempCars.push(
             <Paper zDepth={2} key={i}>
               <ListItem
-                onClick={() => that.handleClick(i)}
+                onClick={() => that.handleClick(i, response.data[i])}
                 primaryText={i}
                 secondaryText={`${response.data[i].year} ${response.data[i].make} ${response.data[i].model} ${response.data[i].level}`}
                 // hoverColor=''
@@ -64,7 +69,7 @@ class DesktopSidebar extends Component {
             </Paper>
           )
         }
-        that.setState({ cars: tempCars })
+        that.setState({ cars: tempCars }, tempCars[0].props.children.props.onClick)
       }
 
     }).catch(function (error) {
@@ -73,9 +78,6 @@ class DesktopSidebar extends Component {
   }
 
   render() {
-    let height = window.innerHeight
-      || document.documentElement.clientHeight
-      || document.body.clientHeight;
     return (
       <Col xsHidden sm={3} className='desktop-sidebar'>
         {this.state.cars}

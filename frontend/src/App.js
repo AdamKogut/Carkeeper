@@ -12,26 +12,17 @@ axios.defaults.baseURL = "http://localhost:9090";
 class App extends Component {
   constructor(props) {
     super(props)
+    this.state={
+      uid:'1111',
+    }
+  }
+
+  changeUid=(uid)=>{
+    this.setState({uid:uid})
   }
 
   componentDidMount = () => {
-    let width = window.innerWidth
-      || document.documentElement.clientWidth
-      || document.body.clientWidth;
-    let height = window.innerHeight
-      || document.documentElement.clientHeight
-      || document.body.clientHeight;
-    root.style.setProperty('--screen-x', width)
-    root.style.setProperty('--screen-y', height)
     window.addEventListener("resize", () => {
-      let width = window.innerWidth
-        || document.documentElement.clientWidth
-        || document.body.clientWidth;
-      let height = window.innerHeight
-        || document.documentElement.clientHeight
-        || document.body.clientHeight;
-      root.style.setProperty('--screen-x', width)
-      root.style.setProperty('--screen-y', height)
       this.forceUpdate()
     })
   }
@@ -44,12 +35,16 @@ class App extends Component {
   })
 
   render() {
+    let toSend={
+      ...this.state,
+      changeUid:this.changeUid,
+    }
     return (
       <MuiThemeProvider muiTheme={this.muiTheme}>
         <Grid className="App fluid">
           <Switch>
-            <Route path='/home' render={() => <HomeLayout />} />
-            <Route path='/landing' render={() => <LandingLayout />} />
+            <Route path='/home' render={() => <HomeLayout {...toSend}/>} />
+            <Route path='/landing' render={() => <LandingLayout {...toSend}/>} />
             <Route path="/" render={() => <Redirect to='/home' />} />
           </Switch>
         </Grid>
