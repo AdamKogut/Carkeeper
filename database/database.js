@@ -6,7 +6,8 @@ module.exports = {
     getGarage,
     getCar,
     removeService,
-    removeCar
+    removeCar,
+    updateCar
 	}
 
 // Create Functions
@@ -147,4 +148,28 @@ function removeCar(userRef, uid, carName) {
     });
   });
   ref.child(carName).remove();
+}
+
+function updateCar(userRef, uid, carName, make, model, year, level) {
+  var ref = userRef.child(uid).child("Garage");
+    if (make != "undefined") {
+      ref.child(carName).update({
+        "make": make
+      });
+    }
+    if (model != "undefined") {
+      ref.child(carName).update({
+        "model": model
+      });
+    }
+    if (year != "undefined") {
+      ref.child(carName).update({
+        "year": year
+      });
+    }
+    if (level != "undefined") {
+      ref.child(carName).update({
+        "level": level
+      });
+    }
 }

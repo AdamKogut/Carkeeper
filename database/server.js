@@ -80,8 +80,9 @@ function test() {
 
   database.removeCar(userRef, "1111", "My First car");
   database.removeCar(userRef, "2222", "My First car");
-*/
 
+  database.updateCar(userRef, "2222", "My First car", "undefined", "undefined", "2016", "undefined");
+  */
 }
 
 //encrypt password
@@ -116,6 +117,7 @@ app.get('/', function(req, res) {
 
 // Create User
 app.post('/CREATE-USER', function (req, res) {
+  console.log("Received request to create user");
   var uid = UID(req.body.email); // username is their email
   var encryptedPassword = encrypt(req.body.password);
   database.createUser(userRef, uid, req.body.email, req.body.firstname, req.body.lastname, req.body.phone, encryptedPassword);
@@ -152,38 +154,50 @@ app.post('/LOGIN', function (req, res) {
 
 // Add Car
 app.post('/ADD-CAR', function (req, res) {
+  console.log("Received request to add car");
   database.addCar(userRef, req.body.uid, req.body.make, req.body.model, req.body.year, req.body.level);
   console.log("New Car Added");
 });
 
 // Add Service  addService(userRef, uid, carNumber, serviceName, priorDate, nextDate, increment) {
 app.post('/ADD-SERVICE', function (req, res) {
+  console.log("Received request to add service");
   // For now, nextDate and increment is unknown until we can use an API or have general increments
   database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, req.body.priorDate, "nextDate", "increment");
   console.log("New service added");
 });
 
 app.post('/GET-GARAGE', function (req, res) {
+  console.log("Received request to get Garage");
   database.getGarage(userRef, req.body.uid, (x) => {
     res.send(x);
   })
-  console.log("Get Garage request");
+  console.log("Returned Garage");
 });
 
 app.post('/GET-CAR', function (req, res) {
+  console.log("Received request to get Car");
   database.getCar(userRef, req.body.uid, req.body.carName, (x) => {
     res.send(x);
   });
-  console.log("Get Car request");
+  console.log("Returned Car");
 });
 
 app.post('/REMOVE-SERVICE', function (req, res) {
+  console.log("Received request to remove service");
   database.removeService(userRef, req.body.uid, req.body.carName, req.body.serviceName);
   console.log("Service Removed");
 });
 
 app.post('/REMOVE-CAR', function (req, res) {
+  console.log("Received request to remove car");
   database.removeService(userRef, req.body.uid, req.body.carName);
+  console.log("Car Removed");
+});
+
+app.post('/UPDATE-CAR', function (req, res) {
+  console.log("Request to remove car received");
+  database.updateCar(userRef, req.body.uid, req.body.carName, req.body.make, req.body.model, req.body.year, req.body.level);
   console.log("Car Removed");
 });
 
