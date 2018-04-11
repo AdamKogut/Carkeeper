@@ -7,7 +7,9 @@ module.exports = {
     getCar,
     removeService,
     removeCar,
-    updateCar
+    updateCar,
+    addPriorDate,
+    updateNextDate
 	}
 
 // Create Functions
@@ -172,4 +174,24 @@ function updateCar(userRef, uid, carName, make, model, year, level) {
         "level": level
       });
     }
+}
+
+function addPriorDate(userRef, uid, carName, serviceName, priorDate) {
+  var ref = userRef.child(uid).child("Garage").child(carName).child("Service List").child(serviceName);
+  var priorDatesList;
+  ref.once("value").then(function(snapshot){
+    priorDatesList = snapshot.val().priorDates;
+    priorDatesList.unshift(priorDate);
+    console.log(priorDatesList);
+    ref.update({
+      "priorDates": priorDatesList
+    });
+  });
+}
+
+function updateNextDate(userRef, uid, carName, serviceName, nextDate) {
+  var ref = userRef.child(uid).child("Garage").child(carName).child("Service List").child(serviceName);
+  ref.update({
+    "nextDate": nextDate
+  });
 }

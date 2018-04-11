@@ -88,7 +88,11 @@ function test() {
   database.removeCar(userRef, "2222", "My First car");
 
   database.updateCar(userRef, "2222", "My First car", "undefined", "undefined", "2016", "undefined");
+
+  database.addPriorDate(userRef, "1111", "My First car", "Engine Oil", "2019-1-15");
+  database.updateNextDate(userRef, "1111", "My First car", "Engine Oil", "2019-1-15");
   */
+  
 }
 
 //encrypt password
@@ -280,6 +284,18 @@ app.post('/GET-ALL-SERVICES', function (req, res) {
   console.log("Request to get all services received");
   res.send(allServices);
   console.log("Returned all services");
+});
+
+app.post('/ADD-PRIOR-DATE', function (req, res) {
+  console.log("Request to all prior date received");
+  // Add Prior date to Prior Dates list
+
+  // Update Next Date
+
+  res.json({
+    "status": true
+  });
+  console.log("Prior date added and next date updated");
 });
 
 // main function
