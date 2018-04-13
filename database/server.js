@@ -101,8 +101,12 @@ function test() {
   });
 
   database.resetPassword(userRef, "2222", "something", "something2");
-  */
 
+  database.updateUser(userRef, "2222","first2","last2","4081413391");
+
+  database.removeUser(userRef, "688");
+
+  */
 }
 
 //encrypt password
@@ -175,17 +179,11 @@ app.post('/LOGIN', function (req, res) {
 
 app.post('/RESET-PASSWORD', function (req, res) {
   console.log('Received request for RESET PASSWORD:');
-  console.log(req.body);
-
   //create ENCRYPTED PASSWORD
   var encryptedOldPassword = encrypt(req.body.oldPassword);
   var encryptedNewPassword = encrypt(req.body.newPassword);
-  var uid = UID(req.body.username); // username is their email
-  console.log(uid);
-
-  database.verifyUser(userRef, uid, encryptedPassword, (x) => {
-    if (x == true) {
-      database.resetPassword(userRef, uid, encryptedOldPassword, encryptedNewPassword);
+  database.resetPassword(userRef, req.body.uid, encryptedOldPassword, encryptedNewPassword, (x) => {
+    if(x == true) {
       res.json({
         "status": true
       });
@@ -202,11 +200,25 @@ app.post('/RESET-PASSWORD', function (req, res) {
 
 app.post('/GET-EMAIL-ID', function (req, res) {
   console.log("Received request to get EMAIL ID");
-  console.log("UID: " + req.body.uid);
   database.getEmailId(userRef, req.body.uid, (x) => {
     res.send(x);
   });
   console.log("Returned Email Id");
+});
+
+app.post('/UPDATE-USER', function (req, res) {
+  console.log("Request to update car received");
+  database.updateUser(userRef, req.body.uid, req.body.firstname, req.body.lastname, req.body.phone);
+  res.json({
+    "status": true
+  });
+  console.log("User Updated");
+});
+
+app.post('/REMOVE-USER', function (req, res) {
+  console.log("Request to remove user "+req.body.uid+" received");
+  database.removeUser(userRef, req.body.uid);
+  console.log("User Removed");
 });
 
 // Add Car
@@ -293,7 +305,7 @@ app.post('/ADD-CUSTOM-SERVICE', function (req, res) {
 
 app.post('/GET-GARAGE', function (req, res) {
   console.log("Received request to get Garage");
-  //console.log("UID: " + req.body.uid);
+  console.log("UID: " + req.body.uid);
   database.getGarage(userRef, req.body.uid, (x) => {
     res.send(x);
   })
@@ -324,6 +336,9 @@ app.post('/REMOVE-CAR', function (req, res) {
 app.post('/UPDATE-CAR', function (req, res) {
   console.log("Request to remove car received");
   database.updateCar(userRef, req.body.uid, req.body.carName, req.body.make, req.body.model, req.body.year, req.body.level);
+  res.json({
+    "status": true
+  });
   console.log("Car Removed");
 });
 
