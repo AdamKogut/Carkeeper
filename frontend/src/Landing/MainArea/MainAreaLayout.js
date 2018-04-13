@@ -16,8 +16,8 @@ class MainAreaLayout extends Component {
       day: today.getDate(),
       month: today.getMonth() + 1,
       year: today.getFullYear(),
-      objectItem:'',
-      addOpen:false,
+      objectItem: '',
+      addOpen: false,
       warning: [
         { openIcon: <i className="material-icons warning">&#xE002;</i>, closeIcon: <i className="material-icons warning">&#xE002;</i> },
       ]
@@ -41,7 +41,6 @@ class MainAreaLayout extends Component {
         "uid": this.props.uid,
         carName: props.currCar,
       }).then(function (response) {
-        // console.log(response.data);
         if (response.data.status != false) {
           let tempCards = []
           for (let i in response.data) {
@@ -80,12 +79,28 @@ class MainAreaLayout extends Component {
             )
             // console.log(that.checkDate(response.data[i].nextDate))
           }
-          that.setState({ cards: tempCards })
+          that.setState({ cards: tempCards }, that.checkForServices)
+        } else {
+          alert('Error: something went wrong, please refresh the page and try again')
         }
 
       }).catch(function (error) {
         console.log(error);
       });
+    }
+  }
+
+  checkForServices = () => {
+    if (this.state.cards.length == 0) {
+      let tempCards = []
+      tempCards.push(
+        <Card key={0}>
+          <CardHeader
+            title="You don't have any services, please add one to get the full effect of the service"
+          />
+        </Card>
+      )
+      this.setState({ cards: tempCards })
     }
   }
 
@@ -102,14 +117,15 @@ class MainAreaLayout extends Component {
   }
 
   handleAdd = (name) => {
-    this.setState({addOpen:true, objectItem:name})
+    this.setState({ addOpen: true, objectItem: name })
   }
 
-  closeAdd=()=>{
-    this.setState({addOpen:false, objectItem:''})
+  closeAdd = () => {
+    this.setState({ addOpen: false, objectItem: '' })
   }
 
   handleRemove = (name) => {
+    let flag = true
     axios.post('/REMOVE-SERVICE', {
       "uid": this.props.uid,
       carName: this.props.currCar,
@@ -118,9 +134,13 @@ class MainAreaLayout extends Component {
       // console.log(response.data)
     }).catch(function (error) {
       console.log(error);
+      alert('Something happened, please try again')
+      flag = false
     });
-    alert('Service Removed')
-    this.getCards(this.props)
+    if (flag) {
+      alert('Service Removed')
+      this.getCards(this.props)
+    }
   }
 
   render() {
@@ -135,9 +155,9 @@ class MainAreaLayout extends Component {
           </Row>
           : null}
         {this.state.cards}
-        <DeleteCarButton {...this.props}/>
-        <AddServiceButton {...this.props}/>
-        <AddDate {...this.props} {...this.state} closeAdd={this.closeAdd}/>
+        <DeleteCarButton {...this.props} />
+        <AddServiceButton {...this.props} />
+        <AddDate {...this.props} {...this.state} closeAdd={this.closeAdd} />
       </Col>
     );
   }

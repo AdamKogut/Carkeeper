@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { RaisedButton, Dialog } from 'material-ui';
-import { Row, Col } from 'react-bootstrap'
+import { RaisedButton } from 'material-ui';
+import { Row } from 'react-bootstrap'
 import AddCarDialog from './AddCarDialog'
 //import './AddCarButton.css';
 
@@ -13,7 +13,7 @@ class AddCarButton extends Component {
   }
 
   closeModal = () => {
-    this.setState({ carModal: false })
+    this.setState({ carModal: false }, this.props.updatePage)
   }
 
   render() {

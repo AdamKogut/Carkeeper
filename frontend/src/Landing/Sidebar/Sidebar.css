@@ -8,5 +8,8 @@
 }
 
 .car-area-sidebar{
-  height:calc(100vh - 57px - 70px)
+  height:calc(100vh - 57px - 70px - 30px);
+  margin-bottom: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }

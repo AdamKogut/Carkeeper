@@ -3,6 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 import axios from 'axios'
 import { Paper, ListItem } from 'material-ui';
 import AddCarButton from './AddCarButton'
+import history from '../../history'
 import './Sidebar.css';
 
 class DesktopSidebar extends Component {
@@ -14,6 +15,7 @@ class DesktopSidebar extends Component {
       deleteOpen: false,
       editOpen: false,
       objectItem: '',
+      temp:false,
     }
   }
 
@@ -82,7 +84,7 @@ class DesktopSidebar extends Component {
         <Row className='car-area-sidebar'>
           {this.state.cars}
         </Row>
-        <AddCarButton {...this.props} />
+        <AddCarButton {...this.props} updatePage={()=>history.go(0)}/>
       </Col>
     );
   }

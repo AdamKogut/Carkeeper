@@ -8,11 +8,7 @@ class AddCarDialog extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      make: '',
-      model: '',
-      year: '',
-      trim: '',
-      nickname: '',
+      password:''
     }
   }
 
@@ -59,7 +55,7 @@ class AddCarDialog extends Component {
             onClick={this.props.closeModal}
           />,
           <RaisedButton
-            label='Add Car'
+            label='Delete Account'
             onClick={this.handleSubmit}
           />
         ]}
@@ -67,37 +63,9 @@ class AddCarDialog extends Component {
       >
         <Col xs={12} sm={6}>
           <TextField
-            hintText='Enter Make'
+            hintText='Enter Password'
             fullWidth
             onChange={(event, value) => this.setState({ make: value })}
-          />
-        </Col>
-        <Col xs={12} sm={6}>
-          <TextField
-            hintText='Enter model year'
-            fullWidth
-            onChange={(event, value) => this.setState({ year: value })}
-          />
-        </Col>
-        <Col xs={12} sm={6}>
-          <TextField
-            hintText='Enter Model'
-            fullWidth
-            onChange={(event, value) => this.setState({ model: value })}
-          />
-        </Col>
-        <Col xs={12} sm={6}>
-          <TextField
-            hintText='Enter Trim'
-            fullWidth
-            onChange={(event, value) => this.setState({ trim: value })}
-          />
-        </Col>
-        <Col xs={12}>
-          <TextField
-            hintText='Enter the nickname for the car'
-            fullWidth
-            onChange={(event, value) => this.setState({ nickname: value })}
           />
         </Col>
       </Dialog>

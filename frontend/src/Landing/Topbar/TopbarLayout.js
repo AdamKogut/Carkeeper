@@ -11,9 +11,9 @@ class TopbarLayout extends Component {
     // console.log(width)
     //console.log(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Mobile/i.test(navigator.userAgent))
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Mobile/i.test(navigator.userAgent) || width < 765) {
-      return (<MobileTopbar />);
+      return (<MobileTopbar {...this.props}/>);
     } else {
-      return (<DesktopTopbar />);
+      return (<DesktopTopbar {...this.props}/>);
     }
   }
 }
