@@ -61,7 +61,7 @@ function test() {
     else {
       console.log("Incorrect Username and Password");
     }
-  });
+
 
    database.addCar(userRef, "1111", "My First car", "make", "model", "year", "level");
    database.addCar(userRef, "1111", "My Second car", "make2", "model2", "year2", "level2");
@@ -171,6 +171,32 @@ app.post('/LOGIN', function (req, res) {
     }
   });
 });
+
+/*app.post('/RESET-PASSWORD', function (req, res) {
+  console.log('Received request for LOGIN:');
+  console.log(req.body);
+
+  //create ENCRYPTED PASSWORD
+  var encryptedPassword = encrypt(req.body.password);
+  var uid = UID(req.body.username); // username is their email
+  console.log(uid);
+
+  database.verifyUser(userRef, uid, encryptedPassword, (x) => {
+    if (x == true) {
+      res.json({
+        "uid": uid,
+        "status": true
+      });
+      console.log("Correct Username and Password");
+    }
+    else {
+      res.json({
+        "status": false
+      });
+      console.log("Incorrect Username and Password");
+    }
+  });
+});*/
 
 // Add Car
 app.post('/ADD-CAR', function (req, res) {
