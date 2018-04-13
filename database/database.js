@@ -12,7 +12,9 @@ module.exports = {
     updateNextDate,
     getIncrement,
 		getEmailId,
-		resetPassword
+		resetPassword,
+		updateUser,
+		removeUser
 	}
 
 // Create Functions
@@ -217,18 +219,44 @@ function getEmailId(userRef, uid, callback) {
 	});
 }
 
-function resetPassword(userRef, uid, oldPassword, newPassword) {
+function resetPassword(userRef, uid, oldPassword, newPassword, callback) {
   var ref = userRef.child(uid).child("password");
   var correctPassword;
   ref.once("value").then(function(snapshot) {
     correctPassword = snapshot.val();
+		console.log(correctPassword+" "+oldPassword);
     if (oldPassword == correctPassword) {
 			userRef.child(uid).update({
 		    "password": newPassword
 		  });
+			callback(true);
     }
     else {
-      console.log("Password Incorrect");
+			callback(false);
     }
   });
+}
+
+function updateUser(userRef, uid, firstname, lastname, phone) {
+  var ref = userRef.child(uid);
+    if (firstname != "undefined") {
+      ref.update({
+        "firstname": firstname
+      });
+    }
+		if (lastname != "undefined") {
+      ref.update({
+        "lastname": lastname
+      });
+    }
+		if (phone != "undefined") {
+      ref.update({
+        "phone": phone
+      });
+    }
+}
+
+function removeUser(userRef, uid, callback) {
+	var ref = userRef.child(uid);
+  ref.remove();
 }
