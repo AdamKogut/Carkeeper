@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import axios from 'axios'
 import { Paper, ListItem } from 'material-ui';
 import AddCarButton from './AddCarButton'
@@ -79,7 +79,9 @@ class DesktopSidebar extends Component {
   render() {
     return (
       <Col xsHidden sm={3} className='desktop-sidebar'>
-        {this.state.cars}
+        <Row className='car-area-sidebar'>
+          {this.state.cars}
+        </Row>
         <AddCarButton {...this.props} />
       </Col>
     );

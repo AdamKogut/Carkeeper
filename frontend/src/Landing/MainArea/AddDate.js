@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Dialog, RaisedButton, DatePicker } from 'material-ui';
+import axios from 'axios'
 //import './AddDate.css';
 
 class AddDate extends Component {
@@ -16,15 +17,15 @@ class AddDate extends Component {
     } else {
       // console.log(this.props)
       // console.log(this.state)
-      // axios.post('/SHOULDFAIL', {
-      //   "uid": this.props.uid,
-      //   carName: this.props.currCar,
-      //   serviceName:this.props.objectItem
-      //   priorDate: this.state.serviceDate,
-      // }).then(function (response) {
-      // }).catch(function (error) {
-      //   console.log(error);
-      // });
+      axios.post('/ADD-PRIOR-DATE', {
+        "uid": this.props.uid,
+        carName: this.props.currCar,
+        serviceName:this.props.objectItem,
+        priorDate: this.state.serviceDate,
+      }).then(function (response) {
+      }).catch(function (error) {
+        console.log(error);
+      });
       this.props.closeAdd()
     }
   }
