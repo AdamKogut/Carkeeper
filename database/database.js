@@ -10,7 +10,9 @@ module.exports = {
     updateCar,
     addPriorDate,
     updateNextDate,
-    getIncrement
+    getIncrement,
+		getEmailId,
+		resetPassword
 	}
 
 // Create Functions
@@ -203,5 +205,30 @@ function updateNextDate(userRef, uid, carName, serviceName, nextDate) {
   var ref = userRef.child(uid).child("Garage").child(carName).child("Service List").child(serviceName);
   ref.update({
     "nextDate": nextDate
+  });
+}
+
+function getEmailId(userRef, uid) {
+	var ref = userRef.child(uid).child("email");
+	ref.once("value").then(function(snapshot) {
+		emailId = snapshot.val().email;
+		console.log("Email Id: "+emailId);
+		callback(emailId);
+	}
+}
+
+function resetPassword(userRef, uid, oldPassword, newPassword) {
+  var ref = userRef.child(uid).child("password");
+  var correctPassword;
+  ref.once("value").then(function(snapshot) {
+    correctPassword = snapshot.val();
+    if (oldPassword == correctPassword) {
+			ref.update({
+		    "password": newPassword
+		  });
+    }
+    else {
+      console.log("Password Incorrect");
+    }
   });
 }
