@@ -95,7 +95,14 @@ function test() {
   database.getIncrement(userRef, "1111", "My First car", "Engine Oil", (x) => {
     console.log(x);
   });
+
+  database.getEmailId(userRef, "1111", (x) => {
+    console.log(x);
+  });
+
+  database.resetPassword(userRef, "2222", "something", "something2");
   */
+
 }
 
 //encrypt password

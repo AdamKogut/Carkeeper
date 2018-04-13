@@ -208,13 +208,13 @@ function updateNextDate(userRef, uid, carName, serviceName, nextDate) {
   });
 }
 
-function getEmailId(userRef, uid) {
+function getEmailId(userRef, uid, callback) {
 	var ref = userRef.child(uid).child("email");
 	ref.once("value").then(function(snapshot) {
-		emailId = snapshot.val().email;
+		emailId = snapshot.val();
 		console.log("Email Id: "+emailId);
 		callback(emailId);
-	}
+	});
 }
 
 function resetPassword(userRef, uid, oldPassword, newPassword) {
@@ -223,7 +223,7 @@ function resetPassword(userRef, uid, oldPassword, newPassword) {
   ref.once("value").then(function(snapshot) {
     correctPassword = snapshot.val();
     if (oldPassword == correctPassword) {
-			ref.update({
+			userRef.child(uid).update({
 		    "password": newPassword
 		  });
     }
