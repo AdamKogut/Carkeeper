@@ -172,31 +172,42 @@ app.post('/LOGIN', function (req, res) {
   });
 });
 
-/*app.post('/RESET-PASSWORD', function (req, res) {
-  console.log('Received request for LOGIN:');
+
+app.post('/RESET-PASSWORD', function (req, res) {
+  console.log('Received request for RESET PASSWORD:');
   console.log(req.body);
 
   //create ENCRYPTED PASSWORD
-  var encryptedPassword = encrypt(req.body.password);
+  var encryptedOldPassword = encrypt(req.body.oldPassword);
+  var encryptedNewPassword = encrypt(req.body.newPassword);
   var uid = UID(req.body.username); // username is their email
   console.log(uid);
 
   database.verifyUser(userRef, uid, encryptedPassword, (x) => {
     if (x == true) {
+      database.resetPassword(userRef, uid, encryptedOldPassword, encryptedNewPassword);
       res.json({
-        "uid": uid,
         "status": true
       });
-      console.log("Correct Username and Password");
+      console.log("Password reset");
     }
     else {
       res.json({
         "status": false
       });
-      console.log("Incorrect Username and Password");
+      console.log("Incorrect Password");
     }
   });
-});*/
+});
+
+app.post('/GET-EMAIL-ID', function (req, res) {
+  console.log("Received request to get EMAIL ID");
+  console.log("UID: " + req.body.uid);
+  database.getEmailId(userRef, req.body.uid, (x) => {
+    res.send(x);
+  });
+  console.log("Returned Email Id");
+});
 
 // Add Car
 app.post('/ADD-CAR', function (req, res) {
