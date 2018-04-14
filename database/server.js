@@ -106,10 +106,12 @@ function test() {
 
   database.removeUser(userRef, "688");
 
-  */
   database.getUser(userRef, "1111", (x) => {
     console.log(x);
   });
+
+  */
+
 }
 
 //encrypt password
@@ -235,7 +237,7 @@ app.post('/REMOVE-USER', function (req, res) {
 // Add Car
 app.post('/ADD-CAR', function (req, res) {
   console.log("Received request to add car");
-  database.addCar(userRef, req.body.uid, req.body.make, req.body.model, req.body.year, req.body.level);
+  database.addCar(userRef, req.body.uid, req.body.carName, req.body.make, req.body.model, req.body.year, req.body.level);
   console.log("New Car Added");
 });
 

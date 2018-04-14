@@ -14,7 +14,8 @@ module.exports = {
 		getEmailId,
 		resetPassword,
 		updateUser,
-		removeUser
+		removeUser,
+		getUser
 	}
 
 // Create Functions
@@ -263,14 +264,8 @@ function removeUser(userRef, uid, callback) {
 
 function getUser(userRef, uid, callback) {
   var ref = userRef.child(uid);
-  var json = {};
   ref.once("value").then(function(snapshot) {
-		json.update() {
-      "email": snapshot.val().email;
-      "firstname": snapshot.val().firstname;
-      "lastname": snapshot.val().lastname;
-      "phone": snapshot.val().phone;
-		}
+		var json = {"email": snapshot.val().email, "firstname": snapshot.val().firstname, "lastname": snapshot.val().lastname, "phone": snapshot.val().phone};
+		callback(json);
 	});
-  callback(json);
-});
+}
