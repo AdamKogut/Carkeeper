@@ -212,7 +212,7 @@ app.post('/GET-EMAIL-ID', function (req, res) {
 // Add Car
 app.post('/ADD-CAR', function (req, res) {
   console.log("Received request to add car");
-  database.addCar(userRef, req.body.uid, req.body.carName, req.body.make, req.body.model, req.body.year, req.body.level);
+  database.addCar(userRef, req.body.uid, req.body.make, req.body.model, req.body.year, req.body.level);
   console.log("New Car Added");
 });
 
