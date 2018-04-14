@@ -149,7 +149,7 @@ app.post('/CREATE-USER', function (req, res) {
   console.log("Received request to create user");
   var uid = UID(req.body.email); // username is their email
   var encryptedPassword = encrypt(req.body.password);
-  database.createUser(userRef, uid, req.body.email, req.body.firstname, req.body.lastname, req.body.phone, encryptedPassword);
+  database.createUser(userRef, uid, req.body.email, req.body.firstname, req.body.lastname, req.body.phone, encryptedPassword, req.body.notifPhone, req.body.notifEmail);
   res.send(uid);
   console.log("New User Created");
 });
@@ -221,17 +221,26 @@ app.post('/GET-USER', function(req, res) {
 
 app.post('/UPDATE-USER', function (req, res) {
   console.log("Request to update car received");
-  database.updateUser(userRef, req.body.uid, req.body.firstname, req.body.lastname, req.body.phone);
-  res.json({
-    "status": true
-  });
+  database.updateUser(userRef, req.body.uid, req.body.firstname, req.body.lastname, req.body.phone, req.body.notifPhone, req.body.notifEmail);
   console.log("User Updated");
 });
 
 app.post('/REMOVE-USER', function (req, res) {
   console.log("Request to remove user "+req.body.uid+" received");
-  database.removeUser(userRef, req.body.uid);
-  console.log("User Removed");
+  database.removeUser(userRef, req.body.uid, encrypt(req.body.password), (x) => {
+      if(x) {
+        console.log("User Removed");
+        res.json({
+          "status": true
+        });
+      }
+      else {
+        console.log("Incorrect Password");
+        res.json({
+          "status": false
+        });
+      }
+  });
 });
 
 // Add Car

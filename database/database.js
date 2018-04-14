@@ -20,7 +20,7 @@ module.exports = {
 
 // Create Functions
 
-function createUser(userRef, uid, email, firstname, lastname, phone, password) {
+function createUser(userRef, uid, email, firstname, lastname, phone, password, notifPhone, notifEmail) {
   userRef.update({
     [uid]:"novalue"
   });
@@ -30,7 +30,9 @@ function createUser(userRef, uid, email, firstname, lastname, phone, password) {
     "lastname": lastname,
     "phone": phone,
     "password": password,
-    "Garage": ""
+    "Garage": "",
+		"notifPhone": notifPhone,
+		"notifEmail": notifEmail,
   });
   userRef.child(uid).child("Garage").update({
     "carCount": 0
@@ -238,7 +240,7 @@ function resetPassword(userRef, uid, oldPassword, newPassword, callback) {
   });
 }
 
-function updateUser(userRef, uid, firstname, lastname, phone) {
+function updateUser(userRef, uid, firstname, lastname, phone, notifPhone, notifEmail) {
   var ref = userRef.child(uid);
     if (firstname != "undefined") {
       ref.update({
@@ -255,17 +257,35 @@ function updateUser(userRef, uid, firstname, lastname, phone) {
         "phone": phone
       });
     }
+		if (notifEmail != "undefined") {
+      ref.update({
+        "notifEmail": notifEmail
+      });
+    }
+		if (notifPhone != "undefined") {
+      ref.update({
+        "notifPhone": notifPhone
+      });
+    }
 }
 
-function removeUser(userRef, uid, callback) {
+function removeUser(userRef, uid, password, callback) {
 	var ref = userRef.child(uid);
-  ref.remove();
+	verifyUser(userRef, uid, password, (x) => {
+			if(x) {
+				ref.remove();
+				callback(true);
+			}
+			else {
+				callback(false);
+			}
+	});
 }
 
 function getUser(userRef, uid, callback) {
   var ref = userRef.child(uid);
   ref.once("value").then(function(snapshot) {
-		var json = {"email": snapshot.val().email, "firstname": snapshot.val().firstname, "lastname": snapshot.val().lastname, "phone": snapshot.val().phone};
+		var json = {"email": snapshot.val().email, "firstname": snapshot.val().firstname, "lastname": snapshot.val().lastname, "phone": snapshot.val().phone, "notifPhone": snapshot.val().notifPhone, "notifEmail": snapshot.val().notifEmail};
 		callback(json);
 	});
 }
