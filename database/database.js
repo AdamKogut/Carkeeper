@@ -260,3 +260,17 @@ function removeUser(userRef, uid, callback) {
 	var ref = userRef.child(uid);
   ref.remove();
 }
+
+function getUser(userRef, uid, callback) {
+  var ref = userRef.child(uid);
+  var json = {};
+  ref.once("value").then(function(snapshot) {
+		json.update() {
+      "email": snapshot.val().email;
+      "firstname": snapshot.val().firstname;
+      "lastname": snapshot.val().lastname;
+      "phone": snapshot.val().phone;
+		}
+	});
+  callback(json);
+});
