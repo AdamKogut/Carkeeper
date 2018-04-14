@@ -1,47 +1,46 @@
 import React, { Component } from 'react';
 import { RaisedButton, Dialog, TextField } from 'material-ui';
-import { Col } from 'react-bootstrap'
+import { Row } from 'react-bootstrap'
 import axios from 'axios'
-//import './AddCarDialog.css';
+import Password from '../../Password';
+//import './DeleteProfileModal.css';
 
-class AddCarDialog extends Component {
+class DeleteProfileModal extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      password:''
+      old: '',
+      new: '',
     }
+    // console.log(props)
   }
 
   handleSubmit = () => {
-    if (this.state.make == '')
-      alert('Please add the make')
-    else if (this.state.model == '')
-      alert('Please add the model')
-    else if (this.state.year == '')
-      alert('Please add the model year')
-    else if (this.state.trim == '')
-      alert('Please add the trim')
-    else if (this.state.nickname == '')
-      alert('Please add nickname for the car')
+    if (this.state.old == '')
+      alert('Please enter your old password')
+    else if (this.state.new == '')
+      alert('Please enter your new password')
+    else if (this.state.old.length < 8 || this.state.new.length < 8)
+      alert('Both passwords must be at least 8 characters')
     else {
-      let flag = true
       // console.log(this.state)
-      axios.post('/ADD-CAR', {
+      let that=this
+      axios.post('/RESET-PASSWORD', {
         "uid": this.props.uid,
-        make: this.state.make,
-        model: this.state.model,
-        year: this.state.year,
-        level: this.state.trim,
-        carName: this.state.nickname,
+        oldPassword: this.state.old,
+        newPassword: this.state.new,
       }).then(function (response) {
-        console.log(response)
+        // console.log(response)
+        if (response.data.status) {
+          alert('Password successfully reset')
+          that.props.closeModal()
+        } else {
+          alert('Incorrect Password')
+        }
       }).catch(function (error) {
         console.log(error);
-        flag = false
-        alert('ERROR: Something happened, please try again')
       });
-      if (flag)
-        this.props.closeModal()
+
     }
   }
 
@@ -49,28 +48,28 @@ class AddCarDialog extends Component {
     return (
       <Dialog
         modal
+        title="Change Password"
         actions={[
           <RaisedButton
             label='Cancel'
             onClick={this.props.closeModal}
           />,
           <RaisedButton
-            label='Delete Account'
+            label='Reset Password'
             onClick={this.handleSubmit}
           />
         ]}
-        open={this.props.carModal}
+        open={this.props.passwordModal}
       >
-        <Col xs={12} sm={6}>
-          <TextField
-            hintText='Enter Password'
-            fullWidth
-            onChange={(event, value) => this.setState({ make: value })}
-          />
-        </Col>
+        <Row>
+          <Password dv='Old Password' changePass={(item) => this.setState({ old: item })} />
+        </Row>
+        <Row>
+          <Password dv='New Password' changePass={(item) => this.setState({ new: item })} />
+        </Row>
       </Dialog>
     );
   }
 }
 
-export default AddCarDialog;
+export default DeleteProfileModal;

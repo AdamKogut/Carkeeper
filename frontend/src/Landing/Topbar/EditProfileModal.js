@@ -20,10 +20,10 @@ class EditProfileModal extends Component {
 
   componentDidMount = () => {
     let that = this
-    /*axios.post('/GET-USER', {
+    axios.post('/GET-USER', {
       "uid": this.props.uid,
     }).then(function (response) {
-      console.log(response)
+      // console.log(response)
       let phone = response.data.phone
       if (phone == 'undefined')
         phone = ''
@@ -36,7 +36,7 @@ class EditProfileModal extends Component {
     }).catch(function (error) {
       console.log(error);
       alert('ERROR: Something happened, please try again')
-    });*/
+    });
   }
 
   handleSubmit = () => {
@@ -54,9 +54,8 @@ class EditProfileModal extends Component {
         this.setState({ phoneNotifications: false })
       }
       // console.log(this.state)
-      axios.post('/UPDATE-ACCOUNT', {
+      axios.post('/UPDATE-USER', {
         "uid": this.props.uid,
-        email: this.state.email,
         emailNotifications: this.state.emailNotifications,
         firstname: this.state.firstname,
         lastname: this.state.lastname,

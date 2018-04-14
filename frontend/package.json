@@ -6,6 +6,7 @@
     "axios": "^0.18.0",
     "history": "^4.7.2",
     "material-ui": "^0.20.0",
+    "material-ui-password-field": "^1.4.1",
     "react": "^16.3.1",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.3.1",

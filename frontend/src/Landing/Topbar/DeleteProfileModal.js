@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { RaisedButton, Dialog, TextField } from 'material-ui';
-import { Col } from 'react-bootstrap'
+import { Row } from 'react-bootstrap'
+import Password from '../../Password'
 import axios from 'axios'
 //import './DeleteProfileModal.css';
 
@@ -8,7 +9,7 @@ class DeleteProfileModal extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      password:''
+      password: ''
     }
     // console.log(props)
   }
@@ -16,6 +17,8 @@ class DeleteProfileModal extends Component {
   handleSubmit = () => {
     if (this.state.password == '')
       alert('Please enter your password')
+    else if(this.state.password.length<8)
+      alert('Password must be at least 8 characters long')
     else {
       let flag = true
       // console.log(this.state)
@@ -23,7 +26,7 @@ class DeleteProfileModal extends Component {
         "uid": this.props.uid,
         password: this.state.password,
       }).then(function (response) {
-        console.log(response)
+        // console.log(response)
       }).catch(function (error) {
         console.log(error);
         flag = false
@@ -31,7 +34,7 @@ class DeleteProfileModal extends Component {
       });
       if (flag)
         this.props.signOut()
-        this.props.closeModal()
+      this.props.closeModal()
     }
   }
 
@@ -52,13 +55,9 @@ class DeleteProfileModal extends Component {
         ]}
         open={this.props.deleteModal}
       >
-        <Col xs={12} sm={6}>
-          <TextField
-            hintText='Enter Password'
-            fullWidth
-            onChange={(event, value) => this.setState({ make: value })}
-          />
-        </Col>
+        <Row>
+          <Password dv='Enter Password' changePass={(item) => this.setState({ old: item })} />
+        </Row>
       </Dialog>
     );
   }
