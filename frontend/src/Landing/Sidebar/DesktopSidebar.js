@@ -15,7 +15,7 @@ class DesktopSidebar extends Component {
       deleteOpen: false,
       editOpen: false,
       objectItem: '',
-      temp:false,
+      temp: false,
     }
   }
 
@@ -70,12 +70,29 @@ class DesktopSidebar extends Component {
             </Paper>
           )
         }
-        that.setState({ cars: tempCars }, tempCars[0].props.children.props.onClick)
+        that.setState({ cars: tempCars }, that.checkGarage)
       }
 
     }).catch(function (error) {
       console.log(error);
     });
+  }
+
+  checkGarage = () => {
+    if (this.state.cars.length == 0) {
+      let tempCars = []
+      tempCars.push(
+        <Paper zDepth={2} key={0}>
+          <ListItem
+            primaryText="You don't have any cars, please add one to get the full experience of the app"
+            disabled
+          />
+        </Paper>
+      )
+      this.setState({cars:tempCars})
+    } else {
+      this.state.cars[0].props.children.props.onClick()
+    }
   }
 
   render() {
@@ -84,7 +101,7 @@ class DesktopSidebar extends Component {
         <Row className='car-area-sidebar'>
           {this.state.cars}
         </Row>
-        <AddCarButton {...this.props} updatePage={()=>history.go(0)}/>
+        <AddCarButton {...this.props} updatePage={() => history.go(0)} />
       </Col>
     );
   }
