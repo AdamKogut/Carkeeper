@@ -107,6 +107,9 @@ function test() {
   database.removeUser(userRef, "688");
 
   */
+  database.getUser(userRef, "1111", (x) => {
+    console.log(x);
+  });
 }
 
 //encrypt password
@@ -199,11 +202,19 @@ app.post('/RESET-PASSWORD', function (req, res) {
 });
 
 app.post('/GET-EMAIL-ID', function (req, res) {
-  console.log("Received request to get EMAIL ID");
   database.getEmailId(userRef, req.body.uid, (x) => {
+    console.log("Received request to get email");
     res.send(x);
   });
   console.log("Returned Email Id");
+});
+
+app.post('/GET-USER', function(req, res) {
+  database.getUser(userRef, req.body.uid, (x) => {
+    console.log("Received request to get user");
+    res.send(x);
+  });
+  console.log("Returned User");
 });
 
 app.post('/UPDATE-USER', function (req, res) {
