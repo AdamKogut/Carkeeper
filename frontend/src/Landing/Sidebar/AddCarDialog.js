@@ -44,8 +44,10 @@ class AddCarDialog extends Component {
         flag = false
         alert('ERROR: Something happened, please try again')
       });
-      if (flag)
+      if (flag){
         this.props.closeModal()
+        this.props.updatePage()
+      }
     }
   }
 

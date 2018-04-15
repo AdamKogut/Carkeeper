@@ -20,3 +20,9 @@
 .warning{
   color:#FFCC00
 }
+
+.item-button-main{
+  float: left;
+  margin-left: 15px;
+  margin-bottom: 20px;
+}

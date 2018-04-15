@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { RaisedButton, Dialog, TextField } from 'material-ui';
 import { Row } from 'react-bootstrap'
-import Password from '../../Password'
+import Password from '../../Shared/Password'
 import axios from 'axios'
 //import './DeleteProfileModal.css';
 
@@ -17,24 +17,28 @@ class DeleteProfileModal extends Component {
   handleSubmit = () => {
     if (this.state.password == '')
       alert('Please enter your password')
-    else if(this.state.password.length<8)
+    else if (this.state.password.length < 8)
       alert('Password must be at least 8 characters long')
     else {
-      let flag = true
       // console.log(this.state)
-      axios.post('/DELETE-ACCOUNT', {
+      let that=this
+      axios.post('/REMOVE-USER', {
         "uid": this.props.uid,
         password: this.state.password,
       }).then(function (response) {
         // console.log(response)
+        if (response.data.status) {
+          alert('Success')
+          that.props.signOut()
+          that.props.closeModal()
+        } else {
+          alert('Incorrect password')
+        }
       }).catch(function (error) {
         console.log(error);
-        flag = false
         alert('ERROR: Something happened, please try again')
       });
-      if (flag)
-        this.props.signOut()
-      this.props.closeModal()
+
     }
   }
 
@@ -56,7 +60,7 @@ class DeleteProfileModal extends Component {
         open={this.props.deleteModal}
       >
         <Row>
-          <Password dv='Enter Password' changePass={(item) => this.setState({ old: item })} />
+          <Password dv='Enter Password' changePass={(item) => this.setState({ password: item })} />
         </Row>
       </Dialog>
     );

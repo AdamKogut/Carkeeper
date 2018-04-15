@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { RaisedButton } from 'material-ui';
+import {Col} from 'react-bootstrap'
 import DeleteCar from '../Sidebar/DeleteCar';
 //import './DeleteCarButton.css';
 
@@ -23,7 +24,7 @@ class DeleteCarButton extends Component {
       closeAll:this.closeAll,
     }
     return (
-      <div className='delete-car-main'>
+      <div className='item-button-main'>
         <RaisedButton
           label='Delete Car'
           icon={<i className="material-icons">&#xE872;</i>}

@@ -11,7 +11,12 @@ class LandingLayout extends Component {
     this.state={
       currCar:'',
       carInfo:{},
+      shouldRefresh:false,
     }
+  }
+
+  changeRefresh=()=>{
+    this.setState({shouldRefresh:!this.state.shouldRefresh})
   }
 
   changeChat=(name, info)=>{
@@ -31,7 +36,7 @@ class LandingLayout extends Component {
         </Row>
         <Row>
           <Sidebar {...toSend}/>
-          <MainArea {...toSend}/>
+          <MainArea {...toSend} changeRefresh={this.changeRefresh}/>
         </Row>
       </div>
     );

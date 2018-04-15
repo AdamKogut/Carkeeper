@@ -27,6 +27,11 @@ class DesktopSidebar extends Component {
     this.setState({ colors: tempColor }, this.changeColor)
   }
 
+  componentWillReceiveProps=(nextProps)=>{
+    if(nextProps.shouldRefresh!=this.props.shouldRefresh)
+      this.componentDidMount()
+  }
+
   changeColor = () => {
     let tempCars = []
     for (let i in this.state.cars) {
@@ -101,7 +106,7 @@ class DesktopSidebar extends Component {
         <Row className='car-area-sidebar'>
           {this.state.cars}
         </Row>
-        <AddCarButton {...this.props} updatePage={() => history.go(0)} />
+        <AddCarButton {...this.props} updatePage={this.componentDidMount} />
       </Col>
     );
   }

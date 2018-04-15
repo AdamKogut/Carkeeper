@@ -13,12 +13,30 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state={
-      uid:'1111',
+      uid:'2222',
+    }
+    try {
+      const serializedState = localStorage.getItem('carkeeper-app')
+      if (serializedState !== null) {
+        this.state = JSON.parse(serializedState)
+        //console.log(this.state)
+      }
+    } catch (err) {
+      console.log('This browser does not allow localstorage and some functionalities may be impacted')
+    }
+  }
+
+  saveState = () => {
+    try {
+      const serializedState = JSON.stringify(this.state)
+      localStorage.setItem('carkeeper-app', serializedState)
+    } catch (err) {
+      console.log('This browser does not allow localstorage and some functionalities may be impacted')
     }
   }
 
   changeUid=(uid)=>{
-    this.setState({uid:uid})
+    this.setState({uid:uid},this.saveState)
   }
 
   componentDidMount = () => {
@@ -44,7 +62,7 @@ class App extends Component {
         <Grid className="App fluid">
           <Switch>
             <Route path='/home' render={() => <HomeLayout {...toSend}/>} />
-            <Route path='/landing' render={() => <LandingLayout {...toSend}/>} />
+            <Route path='/landing' render={() => <LandingLayout uid={this.state.uid}/>} />
             <Route path="/" render={() => <Redirect to='/home' />} />
           </Switch>
         </Grid>

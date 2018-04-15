@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { RaisedButton, Dialog, TextField } from 'material-ui';
 import { Row } from 'react-bootstrap'
 import axios from 'axios'
-import Password from '../../Password';
+import Password from '../../Shared/Password';
 //import './DeleteProfileModal.css';
 
 class DeleteProfileModal extends Component {

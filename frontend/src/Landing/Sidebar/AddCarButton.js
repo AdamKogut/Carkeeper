@@ -13,7 +13,7 @@ class AddCarButton extends Component {
   }
 
   closeModal = () => {
-    this.setState({ carModal: false }, this.props.updatePage)
+    this.setState({ carModal: false })
   }
 
   render() {

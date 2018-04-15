@@ -4,17 +4,24 @@ import axios from 'axios'
 //import './DeleteCar.css';
 
 class DeleteCar extends Component {
-  deleteCar=()=>{
+  deleteCar = () => {
     // console.log(this.props.objectItem)
+    let flag = true;
     axios.post('/REMOVE-CAR', {
       "uid": this.props.uid,
-      carName:this.props.objectItem,
+      carName: this.props.objectItem,
     }).then(function (response) {
     }).catch(function (error) {
       console.log(error);
+      flag = false;
+      alert('Something went wrong, please try again');
     });
-    alert(`${this.props.objectItem} has been successfully deleted`)
-    this.props.closeAll()
+    if (flag) {
+      alert(`${this.props.objectItem} has been successfully deleted`);
+      this.props.shouldRefresh();
+      this.props.changeRefresh();
+      this.props.closeAll();
+    }
   }
 
   render() {

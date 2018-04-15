@@ -25,6 +25,10 @@ class MainAreaLayout extends Component {
     // console.log(props)
   }
 
+  shouldRefresh = () => {
+    this.getCards(this.props)
+  }
+
   componentWillReceiveProps = (nextProps) => {
     if (this.props.currCar != nextProps.currCar || this.props.carInfo != nextProps.carInfo)
       this.getCards(nextProps)
@@ -154,9 +158,12 @@ class MainAreaLayout extends Component {
             <h3>{`${this.props.carInfo.year} ${this.props.carInfo.make} ${this.props.carInfo.model} ${this.props.carInfo.level}`}</h3>
           </Row>
           : null}
+        <Row>
+          <DeleteCarButton {...this.props} shouldRefresh={this.shouldRefresh} />
+          <AddServiceButton {...this.props} shouldRefresh={this.shouldRefresh} />
+        </Row>
         {this.state.cards}
-        <DeleteCarButton {...this.props} />
-        <AddServiceButton {...this.props} />
+
         <AddDate {...this.props} {...this.state} closeAdd={this.closeAdd} />
       </Col>
     );

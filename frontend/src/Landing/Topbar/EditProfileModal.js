@@ -32,6 +32,8 @@ class EditProfileModal extends Component {
         firstname: response.data.firstname,
         lastname: response.data.lastname,
         phone: phone,
+        emailNotifications:response.data.notifEmail,
+        phoneNotifications:response.data.notifPhone
       })
     }).catch(function (error) {
       console.log(error);
@@ -56,11 +58,11 @@ class EditProfileModal extends Component {
       // console.log(this.state)
       axios.post('/UPDATE-USER', {
         "uid": this.props.uid,
-        emailNotifications: this.state.emailNotifications,
+        notifEmail: this.state.emailNotifications,
         firstname: this.state.firstname,
         lastname: this.state.lastname,
         phone: phone,
-        phoneNotifications: this.state.phoneNotifications,
+        notifPhone: this.state.phoneNotifications,
       }).then(function (response) {
         console.log(response)
       }).catch(function (error) {
