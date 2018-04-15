@@ -41,7 +41,7 @@ class LoginModal extends Component {
     } else if (this.state.pass === '' || this.state.pass.length < 8) {
       alert('Please enter a valid password')
     } else {
-      console.log(this.state)
+      // console.log(this.state)
       axios.post('/LOGIN', {
         username: this.state.email,
         password: this.state.pass,

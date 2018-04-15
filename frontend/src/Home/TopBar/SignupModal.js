@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom'
-import { Dialog, RaisedButton, TextField } from 'material-ui';
+import { Dialog, RaisedButton, TextField, Toggle } from 'material-ui';
 import { grey800, black } from 'material-ui/styles/colors';
 import Password from '../../Shared/Password'
 import axios from 'axios'
@@ -13,6 +12,11 @@ class SignupModal extends Component {
     this.state = {
       email: '',
       pass: '',
+      first: '',
+      last: '',
+      phone: '',
+      notifPhone: false,
+      notifEmail: false,
     }
     // console.log(props)
   }
@@ -34,24 +38,36 @@ class SignupModal extends Component {
     },
   }
 
-  login = () => {
+  signup = () => {
     let that = this;
     if (!(new RegExp('[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,}')).test(this.state.email)) {
       alert('Please enter a valid email')
     } else if (this.state.pass === '' || this.state.pass.length < 8) {
       alert('Please enter a valid password')
+    } else if (this.state.first === '') {
+      alert('Please enter a valid first name')
+    } else if (this.state.last === '') {
+      alert('Please enter a valid last name')
     } else {
-      console.log(this.state)
-      axios.post('/LOGIN', {
-        username: this.state.email,
+      // console.log(this.state)
+      let phone = this.state.phone
+      let np = this.state.notifPhone
+      if (phone === '') {
+        phone = 'undefined'
+        np = false
+      }
+      axios.post('/CREATE-USER', {
+        email: this.state.email,
         password: this.state.pass,
+        firstname: this.state.first,
+        lastname: this.state.last,
+        phone: phone,
+        notifPhone: np,
+        notifEmail: this.state.notifEmail,
       }).then(function (response) {
-        if (response.data.status) {
-          that.props.changeUid(response.data.uid)
-          history.push('/landing')
-        } else {
-          alert('Incorrect username or password')
-        }
+        // console.log(response.data)
+        that.props.changeUid(response.data)
+        history.push('/landing')
       }).catch(function (error) {
         console.log(error);
         alert('Something went wrong, please try again');
@@ -64,7 +80,7 @@ class SignupModal extends Component {
       <Dialog
         title='Sign up for CarKeeper'
         modal
-        open={this.props.loginModal}
+        open={this.props.signupModal}
         actions={[
           <RaisedButton
             label='Cancel'
@@ -72,7 +88,7 @@ class SignupModal extends Component {
           />,
           <RaisedButton
             label='Sign up'
-            onClick={this.login}
+            onClick={this.signup}
           />
         ]}
       >
@@ -85,7 +101,46 @@ class SignupModal extends Component {
           hintStyle={this.styles.hintStyle}
           onChange={(event, value) => this.setState({ email: value })}
         />
+        <Toggle
+          label='Recieve email notifications?'
+          labelPosition='right'
+          toggled={this.state.notifEmail}
+          onToggle={() => this.setState({ notifEmail: !this.state.notifEmail })}
+        />
         <Password changePass={(value) => this.setState({ pass: value })} />
+        <TextField
+          floatingLabelText='Firstname'
+          fullWidth
+          floatingLabelStyle={this.styles.floatingLabelStyle}
+          floatingLabelShrinkStyle={this.styles.floatingLabelShrinkStyle}
+          underlineStyle={this.styles.underlineStyle}
+          hintStyle={this.styles.hintStyle}
+          onChange={(event, value) => this.setState({ first: value })}
+        />
+        <TextField
+          floatingLabelText='Lastname'
+          fullWidth
+          floatingLabelStyle={this.styles.floatingLabelStyle}
+          floatingLabelShrinkStyle={this.styles.floatingLabelShrinkStyle}
+          underlineStyle={this.styles.underlineStyle}
+          hintStyle={this.styles.hintStyle}
+          onChange={(event, value) => this.setState({ last: value })}
+        />
+        <TextField
+          floatingLabelText='Phone'
+          fullWidth
+          floatingLabelStyle={this.styles.floatingLabelStyle}
+          floatingLabelShrinkStyle={this.styles.floatingLabelShrinkStyle}
+          underlineStyle={this.styles.underlineStyle}
+          hintStyle={this.styles.hintStyle}
+          onChange={(event, value) => this.setState({ phone: value })}
+        />
+        <Toggle
+          label='Recieve phone notifications?'
+          labelPosition='right'
+          toggled={this.state.notifPhone}
+          onToggle={() => this.setState({ notifPhone: !this.state.notifPhone })}
+        />
       </Dialog>
     );
   }

@@ -18,8 +18,10 @@ class EditProfileModal extends Component {
     // console.log(props)
   }
 
-  componentDidMount = () => {
-    let that = this
+  componentWillReceiveProps = (nextProps) => {
+    if(!nextProps.editModal)
+      return;
+    let that = this;
     axios.post('/GET-USER', {
       "uid": this.props.uid,
     }).then(function (response) {

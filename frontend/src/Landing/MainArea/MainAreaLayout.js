@@ -35,6 +35,7 @@ class MainAreaLayout extends Component {
   }
 
   componentDidMount = () => {
+    if(this.props.uid!=='')
     this.getCards(this.props)
   }
 

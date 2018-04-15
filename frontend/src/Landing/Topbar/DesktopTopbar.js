@@ -22,7 +22,7 @@ class DesktopTopbar extends Component {
     } catch (err) {
       //console.log('This browser does not allow localstorage and some functionalities may be impacted')
     }
-    history.go(0)
+    history.go('/')
   }
 
   closeModal=()=>{

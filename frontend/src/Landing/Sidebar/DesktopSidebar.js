@@ -55,6 +55,8 @@ class DesktopSidebar extends Component {
 
   componentDidMount = () => {
     let that = this
+    if(this.props.uid==='')
+      return;
     axios.post('/GET-GARAGE', {
       "uid": this.props.uid,
     }).then(function (response) {
