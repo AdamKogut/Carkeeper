@@ -34,6 +34,7 @@ class DeleteCar extends Component {
           <RaisedButton
             label="No"
             onClick={this.props.closeAll}
+            style={{marginRight:'15px'}}
           />,
           <RaisedButton
             label="Yes"

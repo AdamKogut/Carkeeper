@@ -51,6 +51,7 @@ class DeleteProfileModal extends Component {
           <RaisedButton
             label='Cancel'
             onClick={this.props.closeModal}
+            style={{marginBottom:'15px'}}
           />,
           <RaisedButton
             label='Delete Account'

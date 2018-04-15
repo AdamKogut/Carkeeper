@@ -13,3 +13,7 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+.mobile{
+  height:calc(100vh - 65px - 70px - 30px);
+}

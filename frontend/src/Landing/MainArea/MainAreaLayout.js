@@ -149,8 +149,15 @@ class MainAreaLayout extends Component {
   }
 
   render() {
+    let width = window.innerWidth
+      || document.documentElement.clientWidth
+      || document.body.clientWidth;
+    let ifMobile='main-desktop';
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Mobile/i.test(navigator.userAgent) || width < 400) {
+      ifMobile='main-mobile';
+    }
     return (
-      <Col sm={9} className='main-desktop'>
+      <Col sm={9} className={ifMobile}>
         {(this.props.carInfo.model != undefined) ?
           <div>
             <Row style={{ marginLeft: '20px' }}>

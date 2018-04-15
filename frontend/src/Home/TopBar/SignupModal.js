@@ -81,10 +81,12 @@ class SignupModal extends Component {
         title='Sign up for CarKeeper'
         modal
         open={this.props.signupModal}
+        autoScrollBodyContent
         actions={[
           <RaisedButton
             label='Cancel'
             onClick={this.props.closeAll}
+            style={{marginRight:'15px'}}
           />,
           <RaisedButton
             label='Sign up'

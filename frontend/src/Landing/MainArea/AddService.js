@@ -118,7 +118,7 @@ class AddService extends Component {
 
   addMonths = () => {
     let tempMonth = [];
-    tempMonth.push(<MenuItem value='undefined' key={0} primaryText='Choose an interval' />);
+    tempMonth.push(<MenuItem value='undefined' key={0} primaryText='Optional Interval' />);
     for (let i = 1; i <= 12; i++) {
       tempMonth.push(<MenuItem value={i} key={i} primaryText={(i == 1) ? `1 month` : `${i} months`} />);
     }
@@ -139,6 +139,7 @@ class AddService extends Component {
           <RaisedButton
             label='Cancel'
             onClick={this.props.closeAll}
+            style={{marginRight:'15px'}}
           />,
           <RaisedButton
             label='Add Service'
@@ -149,6 +150,7 @@ class AddService extends Component {
         <AutoComplete
           hintText='Type your own service name or use one of the suggested'
           fullWidth
+          style={{marginTop:'20px'}}
           searchText={this.state.serviceName}
           dataSource={this.state.dataSource}
           onUpdateInput={this.updateText}
@@ -157,6 +159,7 @@ class AddService extends Component {
         <DatePicker
           hintText='Add date of service'
           mode='landscape'
+          fullWidth
           onChange={this.changeDate}
         />
         <h5>Optional custom service interval</h5>

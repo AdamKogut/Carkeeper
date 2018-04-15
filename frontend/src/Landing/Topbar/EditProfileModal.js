@@ -81,14 +81,16 @@ class EditProfileModal extends Component {
     return (
       <Dialog
         modal
+        autoScrollBodyContent
         title="Edit Profile"
         actions={[
           <RaisedButton
             label='Cancel'
             onClick={this.props.closeModal}
+            style={{marginRight:'25px'}}
           />,
           <RaisedButton
-            label='Update Account'
+            label='Save'
             onClick={this.handleSubmit}
           />
         ]}

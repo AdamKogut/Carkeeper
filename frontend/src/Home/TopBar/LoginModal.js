@@ -69,6 +69,7 @@ class LoginModal extends Component {
           <RaisedButton
             label='Cancel'
             onClick={this.props.closeAll}
+            style={{marginRight:'15px'}}
           />,
           <RaisedButton
             label='Log in'

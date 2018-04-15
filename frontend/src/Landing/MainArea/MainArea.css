@@ -5,6 +5,13 @@
   overflow-y: auto;
 }
 
+.main-mobile{
+  height:calc(100vh - 65px);
+  text-align: left;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .delete-car-main{
   position: absolute;
   top:20px;
