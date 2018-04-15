@@ -32,12 +32,12 @@ class DeleteCar extends Component {
         open={this.props.deleteOpen}
         actions={[
           <RaisedButton
-            label="Yes"
-            onClick={this.deleteCar}
-          />,
-          <RaisedButton
             label="No"
             onClick={this.props.closeAll}
+          />,
+          <RaisedButton
+            label="Yes"
+            onClick={this.deleteCar}
           />
         ]}
       >

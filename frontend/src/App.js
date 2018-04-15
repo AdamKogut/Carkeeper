@@ -13,7 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state={
-      uid:'2222',
+      uid:'',
     }
     try {
       const serializedState = localStorage.getItem('carkeeper-app')

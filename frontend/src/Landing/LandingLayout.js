@@ -3,11 +3,15 @@ import { Row } from 'react-bootstrap'
 import Sidebar from './Sidebar/SidebarLayout'
 import Topbar from './Topbar/TopbarLayout'
 import MainArea from './MainArea/MainAreaLayout'
+import history from '../history'
 //import './LandingLayout.css';
 
 class LandingLayout extends Component {
   constructor(props) {
     super(props)
+    if (props.uid == '') {
+      history.push('/')
+    }
     this.state={
       currCar:'',
       carInfo:{},

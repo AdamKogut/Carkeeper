@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import MobileSidebar from './MobileSidebar'
 import DesktopSidebar from './DesktopSidebar'
-//import './LandingScreen.css';
+//import './SidebarLayout.css';
 
-class LandingScreen extends Component {
+class SidebarLayout extends Component {
   render() {
     let width = window.innerWidth
       || document.documentElement.clientWidth
@@ -18,4 +18,4 @@ class LandingScreen extends Component {
   }
 }
 
-export default LandingScreen;
+export default SidebarLayout;

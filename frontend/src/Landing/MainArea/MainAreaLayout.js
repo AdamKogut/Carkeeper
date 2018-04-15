@@ -150,18 +150,22 @@ class MainAreaLayout extends Component {
   render() {
     return (
       <Col sm={9} className='main-desktop'>
-        <Row style={{ marginLeft: '20px' }}>
-          <h1>{this.props.currCar}&nbsp;</h1>
-        </Row>
         {(this.props.carInfo.model != undefined) ?
-          <Row style={{ marginLeft: '20px', marginTop: '-20px' }}>
-            <h3>{`${this.props.carInfo.year} ${this.props.carInfo.make} ${this.props.carInfo.model} ${this.props.carInfo.level}`}</h3>
-          </Row>
+          <div>
+            <Row style={{ marginLeft: '20px' }}>
+              <h1>{this.props.currCar}&nbsp;</h1>
+            </Row>
+
+            <Row style={{ marginLeft: '20px', marginTop: '-20px' }}>
+              <h3>{`${this.props.carInfo.year} ${this.props.carInfo.make} ${this.props.carInfo.model} ${this.props.carInfo.level}`}</h3>
+            </Row>
+
+            <Row>
+              <DeleteCarButton {...this.props} shouldRefresh={this.shouldRefresh} />
+              <AddServiceButton {...this.props} shouldRefresh={this.shouldRefresh} />
+            </Row>
+          </div>
           : null}
-        <Row>
-          <DeleteCarButton {...this.props} shouldRefresh={this.shouldRefresh} />
-          <AddServiceButton {...this.props} shouldRefresh={this.shouldRefresh} />
-        </Row>
         {this.state.cards}
 
         <AddDate {...this.props} {...this.state} closeAdd={this.closeAdd} />

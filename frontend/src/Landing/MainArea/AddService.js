@@ -43,24 +43,24 @@ class AddService extends Component {
     this.setState({ serviceName: searchText });
   }
 
-  nameRequest=(chosen, index)=>{
-    if(index==-1){
-      this.setState({serviceName:chosen});
+  nameRequest = (chosen, index) => {
+    if (index == -1) {
+      this.setState({ serviceName: chosen });
     } else {
-      this.setState({serviceName:chosen.value});
+      this.setState({ serviceName: chosen.value });
     }
   }
 
   addService = () => {
     if (this.state.serviceName == '') {
       alert('Please fill out the service name');
-    } else if (this.state.serviceDate==''){
+    } else if (this.state.serviceDate == '') {
       alert('Please add the date of the service')
-    }else {
-      let sn="";
-      let that=this
-      if(this.checkIfIncludes(this.state.checkItems,this.state.serviceName)!=-1){
-        sn=this.checkIfIncludes(this.state.checkItems,this.state.serviceName);
+    } else {
+      let sn = "";
+      let that = this
+      if (this.checkIfIncludes(this.state.checkItems, this.state.serviceName) != -1) {
+        sn = this.checkIfIncludes(this.state.checkItems, this.state.serviceName);
         // console.log(sn)
         axios.post('/ADD-SERVICE', {
           "uid": this.props.uid,
@@ -69,10 +69,10 @@ class AddService extends Component {
           serviceName: sn,
           incrementInt: this.state.interval,
         }).then(function (response) {
-          if(response.data.status){
+          if (response.data.status) {
             alert('Successfully Added')
             that.props.shouldRefresh()
-            that.setState({serviceDate:'',serviceName:'',interval:'undefined'})
+            that.setState({ serviceDate: '', serviceName: '', interval: 'undefined' })
           } else {
             alert('Something went wrong, please try again')
           }
@@ -80,7 +80,7 @@ class AddService extends Component {
           console.log(error);
         });
       } else {
-        sn=this.state.serviceName;
+        sn = this.state.serviceName;
         // console.log("hi"+sn)
         axios.post('/ADD-CUSTOM-SERVICE', {
           "uid": this.props.uid,
@@ -89,10 +89,10 @@ class AddService extends Component {
           serviceName: sn,
           incrementInt: this.state.interval,
         }).then(function (response) {
-          if(response.data.status){
+          if (response.data.status) {
             alert('Successfully Added')
             that.props.shouldRefresh()
-            that.setState({serviceDate:'',serviceName:'',interval:'undefined'})
+            that.setState({ serviceDate: '', serviceName: '', interval: 'undefined' })
           } else {
             alert('Something went wrong, please try again')
           }
@@ -100,17 +100,17 @@ class AddService extends Component {
           console.log(error);
         });
       }
-      
+
       this.props.closeAll();
     }
   }
 
-  checkIfIncludes=(arr,toCheck)=>{
-    toCheck=toCheck.toLowerCase();
+  checkIfIncludes = (arr, toCheck) => {
+    toCheck = toCheck.toLowerCase();
     // console.log(toCheck)
-    for(let i in arr){
+    for (let i in arr) {
       // console.log(arr[i].toLowerCase())
-      if(arr[i].toLowerCase()==toCheck)
+      if (arr[i].toLowerCase() == toCheck)
         return arr[i];
     }
     return -1;
@@ -137,12 +137,12 @@ class AddService extends Component {
         open={this.props.addOpen}
         actions={[
           <RaisedButton
-            label='Add Service'
-            onClick={this.addService}
-          />,
-          <RaisedButton
             label='Cancel'
             onClick={this.props.closeAll}
+          />,
+          <RaisedButton
+            label='Add Service'
+            onClick={this.addService}
           />
         ]}
       >

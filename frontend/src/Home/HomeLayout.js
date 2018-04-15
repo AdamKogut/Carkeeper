@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom'
-//import './LandingScreen.css';
+import HomeTopbar from './TopBar/HomeTopbar'
+import HomeBody from './HomeBody'
+//import './HomeLayout.css';
 
-class LandingScreen extends Component {
+class HomeLayout extends Component {
   render() {
     return (
       <div>
+        <HomeTopbar {...this.props} />
+        <HomeBody />
       </div>
     );
   }
 }
 
-export default LandingScreen;
+export default HomeLayout;
