@@ -46,6 +46,7 @@ class DeleteProfileModal extends Component {
     return (
       <Dialog
         modal
+        autoScrollBodyContent
         title="Are you sure you want to delete your account? This cannot be undone"
         actions={[
           <RaisedButton

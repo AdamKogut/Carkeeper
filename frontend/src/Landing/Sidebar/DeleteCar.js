@@ -28,6 +28,7 @@ class DeleteCar extends Component {
     return (
       <Dialog
         modal
+        autoScrollBodyContent
         title={`Are you sure you want to delete ${this.props.objectItem}?`}
         open={this.props.deleteOpen}
         actions={[

@@ -40,10 +40,10 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    window.addEventListener("resize", () => {
-      if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Mobile/i.test(navigator.userAgent)))
-        this.forceUpdate()
-    })
+    // window.addEventListener("resize", () => {
+    //   if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Mobile/i.test(navigator.userAgent)))
+    //     this.forceUpdate()
+    // })
   }
 
   muiTheme = getMuiTheme({

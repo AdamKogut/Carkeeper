@@ -65,6 +65,7 @@ class LoginModal extends Component {
         title='Log in to CarKeeper'
         modal
         open={this.props.loginModal}
+        autoScrollBodyContent
         actions={[
           <RaisedButton
             label='Cancel'

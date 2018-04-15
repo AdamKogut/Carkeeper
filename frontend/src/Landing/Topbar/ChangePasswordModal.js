@@ -24,7 +24,7 @@ class DeleteProfileModal extends Component {
       alert('Both passwords must be at least 8 characters')
     else {
       // console.log(this.state)
-      let that=this
+      let that = this
       axios.post('/RESET-PASSWORD', {
         "uid": this.props.uid,
         oldPassword: this.state.old,
@@ -47,13 +47,14 @@ class DeleteProfileModal extends Component {
   render() {
     return (
       <Dialog
+        autoScrollBodyContent
         modal
         title="Change Password"
         actions={[
           <RaisedButton
             label='Cancel'
             onClick={this.props.closeModal}
-            style={{marginBottom:'15px'}}
+            style={{ marginBottom: '15px' }}
 
           />,
           <RaisedButton

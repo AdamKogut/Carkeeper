@@ -55,6 +55,7 @@ class AddCarDialog extends Component {
     return (
       <Dialog
         modal
+        autoScrollBodyContent
         actions={[
           <RaisedButton
             label='Cancel'

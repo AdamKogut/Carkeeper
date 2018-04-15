@@ -133,6 +133,7 @@ class AddService extends Component {
     return (
       <Dialog
         modal
+        autoScrollBodyContent
         title={`Add service to ${this.props.currCar}`}
         open={this.props.addOpen}
         actions={[

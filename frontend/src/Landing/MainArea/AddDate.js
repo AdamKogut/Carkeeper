@@ -40,6 +40,7 @@ class AddDate extends Component {
     return (
       <Dialog
         modal
+        autoScrollBodyContent
         title={`Add new service date to ${this.props.objectItem}`}
         open={this.props.addOpen}
         actions={[
