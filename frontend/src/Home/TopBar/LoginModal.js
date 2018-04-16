@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Dialog, RaisedButton, TextField, CircularProgress } from 'material-ui';
+import { Dialog, RaisedButton, TextField } from 'material-ui';
 import { grey800, black } from 'material-ui/styles/colors';
 import Password from '../../Shared/Password'
 import axios from 'axios'
 import history from '../../history'
 import Loading from '../../Shared/Loading';
+import ForgotPassword from './ForgotPassword';
 //import './LoginModal.css';
 
 class LoginModal extends Component {
@@ -92,6 +93,7 @@ class LoginModal extends Component {
           onChange={(event, value) => this.setState({ email: value })}
         />
         <Password changePass={(value) => this.setState({ pass: value })} />
+        <ForgotPassword />
       </Dialog>
     );
   }
