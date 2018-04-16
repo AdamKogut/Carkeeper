@@ -40,6 +40,7 @@ class MainAreaLayout extends Component {
   }
 
   getCards = (props) => {
+    this.setState({cards:[]})
     if (props.currCar !== '') {
       let that = this
       // console.log(props.currCar)

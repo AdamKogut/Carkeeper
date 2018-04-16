@@ -4,6 +4,7 @@ import { grey800, black } from 'material-ui/styles/colors';
 import Password from '../../Shared/Password'
 import axios from 'axios'
 import history from '../../history'
+import Loading from '../../Shared/Loading';
 //import './SignupModal.css';
 
 class SignupModal extends Component {
@@ -17,6 +18,7 @@ class SignupModal extends Component {
       phone: '',
       notifPhone: false,
       notifEmail: false,
+      loading: false,
     }
     // console.log(props)
   }
@@ -39,6 +41,7 @@ class SignupModal extends Component {
   }
 
   signup = () => {
+    this.setState({ loading: true })
     let that = this;
     if (!(new RegExp('[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,}')).test(this.state.email)) {
       alert('Please enter a valid email')
@@ -66,8 +69,9 @@ class SignupModal extends Component {
         notifEmail: this.state.notifEmail,
       }).then(function (response) {
         // console.log(response.data)
-        that.props.changeUid(response.data)
-        history.push('/landing')
+        that.setState({ loading: false });
+        that.props.changeUid(response.data);
+        history.push('/landing');
       }).catch(function (error) {
         console.log(error);
         alert('Something went wrong, please try again');
@@ -86,7 +90,7 @@ class SignupModal extends Component {
           <RaisedButton
             label='Cancel'
             onClick={this.props.closeAll}
-            style={{marginRight:'15px'}}
+            style={{ marginRight: '15px' }}
           />,
           <RaisedButton
             label='Sign up'
@@ -94,6 +98,7 @@ class SignupModal extends Component {
           />
         ]}
       >
+        <Loading loading={this.state.loading} />
         <TextField
           floatingLabelText='Email'
           fullWidth

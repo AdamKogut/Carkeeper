@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Dialog, RaisedButton, TextField } from 'material-ui';
+import { Dialog, RaisedButton, TextField, CircularProgress } from 'material-ui';
 import { grey800, black } from 'material-ui/styles/colors';
 import Password from '../../Shared/Password'
 import axios from 'axios'
 import history from '../../history'
+import Loading from '../../Shared/Loading';
 //import './LoginModal.css';
 
 class LoginModal extends Component {
@@ -12,6 +13,7 @@ class LoginModal extends Component {
     this.state = {
       email: '',
       pass: '',
+      loading:false,
     }
     // console.log(props)
   }
@@ -34,6 +36,7 @@ class LoginModal extends Component {
   }
 
   login = () => {
+    this.setState({loading:true})
     let that = this;
     if (!(new RegExp('[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,}')).test(this.state.email)) {
       alert('Please enter a valid email')
@@ -45,6 +48,7 @@ class LoginModal extends Component {
         username: this.state.email.toLowerCase(),
         password: this.state.pass,
       }).then(function (response) {
+        that.state({loading:false})
         if (response.data.status) {
           that.props.changeUid(response.data.uid)
           history.push('/landing')
@@ -77,6 +81,7 @@ class LoginModal extends Component {
           />
         ]}
       >
+        <Loading loading={this.state.loading} />
         <TextField
           floatingLabelText='Email'
           fullWidth
