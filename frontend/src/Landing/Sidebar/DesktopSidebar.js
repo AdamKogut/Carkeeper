@@ -3,7 +3,6 @@ import { Col, Row } from 'react-bootstrap'
 import axios from 'axios'
 import { Paper, ListItem } from 'material-ui';
 import AddCarButton from './AddCarButton'
-import history from '../../history'
 import './Sidebar.css';
 
 class DesktopSidebar extends Component {
@@ -27,8 +26,8 @@ class DesktopSidebar extends Component {
     this.setState({ colors: tempColor }, this.changeColor)
   }
 
-  componentWillReceiveProps=(nextProps)=>{
-    if(nextProps.shouldRefresh!=this.props.shouldRefresh)
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.shouldRefresh !== this.props.shouldRefresh)
       this.componentDidMount()
   }
 
@@ -55,30 +54,28 @@ class DesktopSidebar extends Component {
 
   componentDidMount = () => {
     let that = this
-    if(this.props.uid==='')
+    if (this.props.uid === '')
       return;
     axios.post('/GET-GARAGE', {
       "uid": this.props.uid,
     }).then(function (response) {
       // console.log(response.data);
-      if (response.data.status != false) {
-        let tempCars = []
-        for (let i in response.data) {
-          // console.log(i)
-          tempCars.push(
-            <Paper zDepth={2} key={i}>
-              <ListItem
-                onClick={() => that.handleClick(i, response.data[i])}
-                primaryText={i}
-                secondaryText={`${response.data[i].year} ${response.data[i].make} ${response.data[i].model} ${response.data[i].level}`}
-                // hoverColor=''
-                {...that.state.colors[i]}
-              />
-            </Paper>
-          )
-        }
-        that.setState({ cars: tempCars }, that.checkGarage)
+      let tempCars = []
+      for (let i in response.data) {
+        // console.log(i)
+        tempCars.push(
+          <Paper zDepth={2} key={i}>
+            <ListItem
+              onClick={() => that.handleClick(i, response.data[i])}
+              primaryText={i}
+              secondaryText={`${response.data[i].year} ${response.data[i].make} ${response.data[i].model} ${response.data[i].level}`}
+              // hoverColor=''
+              {...that.state.colors[i]}
+            />
+          </Paper>
+        )
       }
+      that.setState({ cars: tempCars }, that.checkGarage);
 
     }).catch(function (error) {
       console.log(error);
@@ -86,7 +83,7 @@ class DesktopSidebar extends Component {
   }
 
   checkGarage = () => {
-    if (this.state.cars.length == 0) {
+    if (this.state.cars.length === 0) {
       let tempCars = []
       tempCars.push(
         <Paper zDepth={2} key={0}>
@@ -96,7 +93,7 @@ class DesktopSidebar extends Component {
           />
         </Paper>
       )
-      this.setState({cars:tempCars})
+      this.setState({ cars: tempCars })
     } else {
       this.state.cars[0].props.children.props.onClick()
     }

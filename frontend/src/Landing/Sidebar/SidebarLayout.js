@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import MobileSidebar from './MobileSidebar'
 import DesktopSidebar from './DesktopSidebar'
 //import './SidebarLayout.css';
 

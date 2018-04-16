@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { RaisedButton } from 'material-ui';
 import AddService from './AddService';
-import { Col } from 'react-bootstrap'
 //import './AddServiceButton.css';
 
 class AddServiceButton extends Component {

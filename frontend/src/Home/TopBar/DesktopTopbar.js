@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom'
 import { Toolbar, ToolbarGroup, FlatButton, ToolbarSeparator } from 'material-ui';
 import { Row } from 'react-bootstrap'
 import SignupModal from './SignupModal'

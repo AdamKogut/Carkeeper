@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { RaisedButton, Dialog, TextField } from 'material-ui';
+import { RaisedButton, Dialog } from 'material-ui';
 import { Row } from 'react-bootstrap'
 import Password from '../../Shared/Password'
 import axios from 'axios'
@@ -15,7 +15,7 @@ class DeleteProfileModal extends Component {
   }
 
   handleSubmit = () => {
-    if (this.state.password == '')
+    if (this.state.password === '')
       alert('Please enter your password')
     else if (this.state.password.length < 8)
       alert('Password must be at least 8 characters long')

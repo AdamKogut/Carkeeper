@@ -37,7 +37,7 @@ class Password extends Component {
   }
 
   defaultValue=()=>{
-    if(this.props.dv==null||this.props.dv==''){
+    if(this.props.dv==null||this.props.dv===''){
       return "Password"
     }else{
       return this.props.dv

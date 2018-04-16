@@ -27,7 +27,7 @@ class EditProfileModal extends Component {
     }).then(function (response) {
       // console.log(response)
       let phone = response.data.phone
-      if (phone == 'undefined')
+      if (phone === 'undefined')
         phone = ''
       that.setState({
         email: response.data.email,
@@ -44,16 +44,16 @@ class EditProfileModal extends Component {
   }
 
   handleSubmit = () => {
-    if (this.state.firstname == '')
+    if (this.state.firstname === '')
       alert('Please enter your first name')
-    else if (this.state.lastname == '')
+    else if (this.state.lastname === '')
       alert('Please enter your last name')
-    else if (this.state.phone != '' && this.state.phone.length < 7)
+    else if (this.state.phone !== '' && this.state.phone.length < 7)
       alert('Please enter a phone number with a correct format')
     else {
       let flag = true
       let phone = this.state.phone
-      if (phone == '') {
+      if (phone === '') {
         phone = 'undefined'
         this.setState({ phoneNotifications: false })
       }

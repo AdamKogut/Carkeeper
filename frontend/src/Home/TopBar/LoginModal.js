@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom'
 import { Dialog, RaisedButton, TextField } from 'material-ui';
 import { grey800, black } from 'material-ui/styles/colors';
 import Password from '../../Shared/Password'

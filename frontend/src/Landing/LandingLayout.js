@@ -9,7 +9,7 @@ import history from '../history'
 class LandingLayout extends Component {
   constructor(props) {
     super(props)
-    if (props.uid == '') {
+    if (props.uid === '') {
       history.push('/')
     }
     this.state={

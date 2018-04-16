@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom'
 import { Drawer } from 'material-ui';
 import MobileSidebar from '../Sidebar/MobileSidebar';
 //import './LandingDrawer.css';

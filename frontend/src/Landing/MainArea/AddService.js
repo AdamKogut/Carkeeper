@@ -44,7 +44,7 @@ class AddService extends Component {
   }
 
   nameRequest = (chosen, index) => {
-    if (index == -1) {
+    if (index === -1) {
       this.setState({ serviceName: chosen });
     } else {
       this.setState({ serviceName: chosen.value });
@@ -52,14 +52,14 @@ class AddService extends Component {
   }
 
   addService = () => {
-    if (this.state.serviceName == '') {
+    if (this.state.serviceName === '') {
       alert('Please fill out the service name');
-    } else if (this.state.serviceDate == '') {
+    } else if (this.state.serviceDate === '') {
       alert('Please add the date of the service')
     } else {
       let sn = "";
       let that = this
-      if (this.checkIfIncludes(this.state.checkItems, this.state.serviceName) != -1) {
+      if (this.checkIfIncludes(this.state.checkItems, this.state.serviceName) !== -1) {
         sn = this.checkIfIncludes(this.state.checkItems, this.state.serviceName);
         // console.log(sn)
         axios.post('/ADD-SERVICE', {
@@ -110,7 +110,7 @@ class AddService extends Component {
     // console.log(toCheck)
     for (let i in arr) {
       // console.log(arr[i].toLowerCase())
-      if (arr[i].toLowerCase() == toCheck)
+      if (arr[i].toLowerCase() === toCheck)
         return arr[i];
     }
     return -1;
@@ -120,7 +120,7 @@ class AddService extends Component {
     let tempMonth = [];
     tempMonth.push(<MenuItem value='undefined' key={0} primaryText='Optional Interval' />);
     for (let i = 1; i <= 12; i++) {
-      tempMonth.push(<MenuItem value={i} key={i} primaryText={(i == 1) ? `1 month` : `${i} months`} />);
+      tempMonth.push(<MenuItem value={i} key={i} primaryText={(i === 1) ? `1 month` : `${i} months`} />);
     }
     return tempMonth;
   }
@@ -155,11 +155,10 @@ class AddService extends Component {
           searchText={this.state.serviceName}
           dataSource={this.state.dataSource}
           onUpdateInput={this.updateText}
-          filter={(searchText, key) => searchText != '' && key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1}
+          filter={(searchText, key) => searchText !== '' && key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1}
         />
         <DatePicker
           hintText='Add date of service'
-          mode='landscape'
           fullWidth
           onChange={this.changeDate}
         />

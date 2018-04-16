@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { RaisedButton } from 'material-ui';
-import {Col} from 'react-bootstrap'
 import DeleteCar from '../Sidebar/DeleteCar';
 //import './DeleteCarButton.css';
 

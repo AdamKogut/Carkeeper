@@ -28,7 +28,7 @@ class MobileSidebar extends Component {
   }
 
   componentWillReceiveProps=(nextProps)=>{
-    if(nextProps.shouldRefresh!=this.props.shouldRefresh)
+    if(nextProps.shouldRefresh!==this.props.shouldRefresh)
       this.componentDidMount()
   }
 
@@ -58,10 +58,10 @@ class MobileSidebar extends Component {
     if(this.props.uid==='')
       return;
     axios.post('/GET-GARAGE', {
-      "uid": this.props.uid,
+      "uid": 3//this.props.uid,
     }).then(function (response) {
-      // console.log(response.data);
-      if (response.data.status != false) {
+      console.log(response.data);
+      if (response.data.status !== false) {
         let tempCars = []
         for (let i in response.data) {
           // console.log(i)
@@ -78,6 +78,8 @@ class MobileSidebar extends Component {
           )
         }
         that.setState({ cars: tempCars }, that.checkGarage)
+      } else {
+        alert('ERROR: please refresh page')
       }
 
     }).catch(function (error) {
@@ -86,7 +88,7 @@ class MobileSidebar extends Component {
   }
 
   checkGarage = () => {
-    if (this.state.cars.length == 0) {
+    if (this.state.cars.length === 0) {
       let tempCars = []
       tempCars.push(
         <Paper zDepth={2} key={0}>

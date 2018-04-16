@@ -30,64 +30,62 @@ class MainAreaLayout extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if (this.props.currCar != nextProps.currCar || this.props.carInfo != nextProps.carInfo)
+    if (this.props.currCar !== nextProps.currCar || this.props.carInfo !== nextProps.carInfo)
       this.getCards(nextProps)
   }
 
   componentDidMount = () => {
-    if(this.props.uid!=='')
-    this.getCards(this.props)
+    if (this.props.uid !== '')
+      this.getCards(this.props)
   }
 
   getCards = (props) => {
-    if (props.currCar != '') {
+    if (props.currCar !== '') {
       let that = this
+      // console.log(props.currCar)
       axios.post('/GET-CAR', {
         "uid": this.props.uid,
         carName: props.currCar,
       }).then(function (response) {
-        if (response.data.status != false) {
-          let tempCards = []
-          for (let i in response.data) {
-            let tempPrior = []
-            for (let k in response.data[i].priorDates) {
-              tempPrior.push(
-                <h6 key={k}>{response.data[i].priorDates[k]}</h6>
-              )
-            }
-            // console.log(tempPrior.length)
-            tempCards.push(
-              <Card key={i} style={{ textAlign: 'left' }}>
-                <CardHeader
-                  title={<h3>{i}</h3>}
-                  subtitle={<h4>Next service due: {response.data[i].nextDate}</h4>}
-                  actAsExpander
-                  showExpandableButton
-                  {...that.state.warning[that.checkDate(response.data[i].nextDate)]}
-                />
-                <CardText expandable style={{ marginTop: '-40px' }}>
-                  {/* <h4>Next service due: {response.data[i].nextDate}</h4> */}
-                  {(tempPrior.length > 0) ? <h5>Previous services: </h5> : null}
-                  {tempPrior}
-                </CardText>
-                <CardActions expandable style={{ marginTop: '-20px' }}>
-                  <FlatButton
-                    label='Add new date'
-                    onClick={() => that.handleAdd(i)}
-                  />
-                  <FlatButton
-                    label='Remove Service'
-                    onClick={() => that.handleRemove(i)}
-                  />
-                </CardActions>
-              </Card>
+        // console.log(response.data)
+        let tempCards = []
+        for (let i in response.data) {
+          let tempPrior = []
+          for (let k in response.data[i].priorDates) {
+            tempPrior.push(
+              <h6 key={k}>{response.data[i].priorDates[k]}</h6>
             )
-            // console.log(that.checkDate(response.data[i].nextDate))
           }
-          that.setState({ cards: tempCards }, that.checkForServices)
-        } else {
-          alert('Error: something went wrong, please refresh the page and try again')
+          // console.log(tempPrior.length)
+          tempCards.push(
+            <Card key={i} style={{ textAlign: 'left' }}>
+              <CardHeader
+                title={<h3>{i}</h3>}
+                subtitle={<h4>Next service due: {response.data[i].nextDate}</h4>}
+                actAsExpander
+                showExpandableButton
+                {...that.state.warning[that.checkDate(response.data[i].nextDate)]}
+              />
+              <CardText expandable style={{ marginTop: '-40px' }}>
+                {/* <h4>Next service due: {response.data[i].nextDate}</h4> */}
+                {(tempPrior.length > 0) ? <h5>Previous services: </h5> : null}
+                {tempPrior}
+              </CardText>
+              <CardActions expandable style={{ marginTop: '-20px' }}>
+                <FlatButton
+                  label='Add new date'
+                  onClick={() => that.handleAdd(i)}
+                />
+                <FlatButton
+                  label='Remove Service'
+                  onClick={() => that.handleRemove(i)}
+                />
+              </CardActions>
+            </Card>
+          )
+          // console.log(that.checkDate(response.data[i].nextDate))
         }
+        that.setState({ cards: tempCards }, that.checkForServices)
 
       }).catch(function (error) {
         console.log(error);
@@ -96,7 +94,7 @@ class MainAreaLayout extends Component {
   }
 
   checkForServices = () => {
-    if (this.state.cards.length == 0) {
+    if (this.state.cards.length === 0) {
       let tempCards = []
       tempCards.push(
         <Card key={0}>
@@ -152,13 +150,13 @@ class MainAreaLayout extends Component {
     let width = window.innerWidth
       || document.documentElement.clientWidth
       || document.body.clientWidth;
-    let ifMobile='main-desktop';
+    let ifMobile = 'main-desktop';
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Mobile/i.test(navigator.userAgent) || width < 400) {
-      ifMobile='main-mobile';
+      ifMobile = 'main-mobile';
     }
     return (
       <Col sm={9} className={ifMobile}>
-        {(this.props.carInfo.model != undefined) ?
+        {(this.props.carInfo.model !== undefined) ?
           <div>
             <Row style={{ marginLeft: '20px' }}>
               <h1>{this.props.currCar}&nbsp;</h1>

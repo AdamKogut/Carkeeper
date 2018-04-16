@@ -12,7 +12,7 @@ class AddDate extends Component {
   }
 
   handleSubmit=()=>{
-    if(this.state.serviceDate==''){
+    if(this.state.serviceDate===''){
       alert('Please choose a date')
     } else {
       // console.log(this.props)
@@ -56,7 +56,6 @@ class AddDate extends Component {
       >
       <DatePicker
         hintText='Add date of service'
-        mode='landscape'
         onChange={this.changeDate}
       />
       </Dialog>

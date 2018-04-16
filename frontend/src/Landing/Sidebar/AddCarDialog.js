@@ -17,15 +17,15 @@ class AddCarDialog extends Component {
   }
 
   handleSubmit = () => {
-    if (this.state.make == '')
+    if (this.state.make === '')
       alert('Please add the make')
-    else if (this.state.model == '')
+    else if (this.state.model === '')
       alert('Please add the model')
-    else if (this.state.year == '')
+    else if (this.state.year === '')
       alert('Please add the model year')
-    else if (this.state.trim == '')
+    else if (this.state.trim === '')
       alert('Please add the trim')
-    else if (this.state.nickname == '')
+    else if (this.state.nickname === '')
       alert('Please add nickname for the car')
     else {
       let flag = true
