@@ -43,7 +43,7 @@ class LoginModal extends Component {
     } else {
       // console.log(this.state)
       axios.post('/LOGIN', {
-        username: this.state.email,
+        username: this.state.email.toLowerCase(),
         password: this.state.pass,
       }).then(function (response) {
         if (response.data.status) {

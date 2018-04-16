@@ -57,7 +57,7 @@ class SignupModal extends Component {
         np = false
       }
       axios.post('/CREATE-USER', {
-        email: this.state.email,
+        email: this.state.email.toLowerCase(),
         password: this.state.pass,
         firstname: this.state.first,
         lastname: this.state.last,

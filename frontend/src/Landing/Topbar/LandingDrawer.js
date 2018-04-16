@@ -10,6 +10,7 @@ class LandingDrawer extends Component {
       <Drawer
         open={this.props.openDrawer}
         onRequestChange={this.props.close}
+        disableSwipeToOpen
         docked={false}
       >
         <div className='drawer-title'>
