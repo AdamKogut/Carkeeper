@@ -7,7 +7,7 @@ import LandingLayout from './Landing/LandingLayout'
 import HomeLayout from './Home/HomeLayout'
 import axios from 'axios'
 
-axios.defaults.baseURL = "http://localhost:9090";
+axios.defaults.baseURL = "https://carkeeper-server.herokuapp.com/";
 
 class App extends Component {
   constructor(props) {
