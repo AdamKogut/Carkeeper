@@ -15,6 +15,7 @@ class AddDate extends Component {
     if(this.state.serviceDate===''){
       alert('Please choose a date')
     } else {
+      let that=this
       // console.log(this.props)
       // console.log(this.state)
       axios.post('/ADD-PRIOR-DATE', {
@@ -23,6 +24,9 @@ class AddDate extends Component {
         serviceName:this.props.objectItem,
         priorDate: this.state.serviceDate,
       }).then(function (response) {
+        if(response.data.status===true)
+          alert('Success!');
+        that.props.shouldRefresh()
       }).catch(function (error) {
         console.log(error);
       });

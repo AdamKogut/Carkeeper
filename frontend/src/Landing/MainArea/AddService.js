@@ -52,6 +52,7 @@ class AddService extends Component {
   }
 
   addService = () => {
+    let timeout=window.setTimeout(this.forceUpdate,1000);
     if (this.state.serviceName === '') {
       alert('Please fill out the service name');
     } else if (this.state.serviceDate === '') {
@@ -70,6 +71,8 @@ class AddService extends Component {
           incrementInt: this.state.interval,
         }).then(function (response) {
           if (response.data.status) {
+            console.log("1")
+            window.clearTimeout(timeout)
             alert('Successfully Added')
             that.props.shouldRefresh()
             that.setState({ serviceDate: '', serviceName: '', interval: 'undefined' })
@@ -90,6 +93,8 @@ class AddService extends Component {
           incrementInt: this.state.interval,
         }).then(function (response) {
           if (response.data.status) {
+            console.log('2')
+            window.clearTimeout(timeout)
             alert('Successfully Added')
             that.props.shouldRefresh()
             that.setState({ serviceDate: '', serviceName: '', interval: 'undefined' })
@@ -100,7 +105,7 @@ class AddService extends Component {
           console.log(error);
         });
       }
-
+      this.props.shouldRefresh();
       this.props.closeAll();
     }
   }

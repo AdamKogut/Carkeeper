@@ -174,7 +174,7 @@ class MainAreaLayout extends Component {
           : null}
         {this.state.cards}
 
-        <AddDate {...this.props} {...this.state} closeAdd={this.closeAdd} />
+        <AddDate {...this.props} {...this.state} closeAdd={this.closeAdd} shouldRefresh={this.shouldRefresh}/>
       </Col>
     );
   }
