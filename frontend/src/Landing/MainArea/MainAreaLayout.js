@@ -40,7 +40,7 @@ class MainAreaLayout extends Component {
   }
 
   getCards = (props) => {
-    this.setState({cards:[]})
+    this.setState({ cards: [] })
     if (props.currCar !== '') {
       let that = this
       // console.log(props.currCar)
@@ -129,7 +129,6 @@ class MainAreaLayout extends Component {
   }
 
   handleRemove = (name) => {
-    let flag = true
     axios.post('/REMOVE-SERVICE', {
       "uid": this.props.uid,
       carName: this.props.currCar,
@@ -137,14 +136,9 @@ class MainAreaLayout extends Component {
     }).then(function (response) {
       // console.log(response.data)
     }).catch(function (error) {
-      console.log(error);
-      alert('Something happened, please try again')
-      flag = false
     });
-    if (flag) {
-      alert('Service Removed')
-      this.getCards(this.props)
-    }
+    alert('Service Removed')
+    this.getCards(this.props)
   }
 
   render() {
@@ -175,7 +169,7 @@ class MainAreaLayout extends Component {
           : null}
         {this.state.cards}
 
-        <AddDate {...this.props} {...this.state} closeAdd={this.closeAdd} shouldRefresh={this.shouldRefresh}/>
+        <AddDate {...this.props} {...this.state} closeAdd={this.closeAdd} shouldRefresh={this.shouldRefresh} />
       </Col>
     );
   }

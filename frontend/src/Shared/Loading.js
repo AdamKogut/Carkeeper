@@ -9,6 +9,8 @@ class Loading extends Component {
         <CircularProgress
           size={60}
           thickness={7}
+          style={{position:'absolute',top:'50%',left:'50%'}}
+          color='var(--color3)'
         />
       );
     } else {

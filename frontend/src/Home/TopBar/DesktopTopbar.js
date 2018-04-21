@@ -22,7 +22,7 @@ class DesktopTopbar extends Component {
     return (
       <Row>
         <Toolbar
-          style={{ backgroundColor: '#50C2C4', color: '#F8FBF5' }}
+          style={{ backgroundColor: 'var(--color3)', color: 'var(--color1)' }}
           className='desktop-bar'
         >
           <ToolbarGroup>
@@ -31,14 +31,14 @@ class DesktopTopbar extends Component {
           <ToolbarGroup lastChild>
             <FlatButton
               label='Log in'
-              labelStyle={{color:'#F8FBF5'}}
+              labelStyle={{color:'var(--color1)'}}
               style={{marginRight:'-25px'}}
               onClick={()=>this.setState({loginModal:true})}
             />
-            <ToolbarSeparator style={{marginRight:'-25px', backgroundColor:'#F8FBF5'}} />
+            <ToolbarSeparator style={{marginRight:'-25px', backgroundColor:'var(--color1)'}} />
             <FlatButton
               label='Sign up'
-              labelStyle={{color:'#F8FBF5'}}
+              labelStyle={{color:'var(--color1)'}}
               onClick={()=>this.setState({signupModal:true})}
             />
           </ToolbarGroup>

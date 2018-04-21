@@ -1,5 +1,19 @@
 :root{
-  --main:#50C2C4;
+  /* --color1:#F8F6F8;
+  --color2:#A5A5AC;
+  --color3:#C3A75E;
+  --color4:#8C8891;
+  --color5:#3B4051; */
+  /* --color1:#F6F4F4;
+  --color2:#888D94;
+  --color3:#7189AF;
+  --color4:#748294;
+  --color5:#12294E; */
+  --color1:#E2E2E6;
+  --color2:#72A5C1;
+  --color3:#2E599F;
+  --color4:#58698D;
+  --color5:#151421;
   /*overflow: hidden;*/
 }
 
@@ -8,6 +22,7 @@
   width:100vw;
   overflow: hidden;
   font-family: 'Roboto', sans-serif;
+  color:var(--color5);
 }
 
 .App-title {

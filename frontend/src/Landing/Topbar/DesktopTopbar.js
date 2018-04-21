@@ -42,7 +42,7 @@ class DesktopTopbar extends Component {
     }
     return (
       <Toolbar
-        style={{ backgroundColor: '#50C2C4', color: '#F8FBF5' }}
+        style={{ backgroundColor: 'var(--color3)', color: 'var(--color1)' }}
         className='desktop-bar'
       >
         <ToolbarGroup>

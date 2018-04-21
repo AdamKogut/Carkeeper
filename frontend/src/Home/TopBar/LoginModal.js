@@ -49,7 +49,7 @@ class LoginModal extends Component {
         username: this.state.email.toLowerCase(),
         password: this.state.pass,
       }).then(function (response) {
-        that.state({loading:false})
+        that.setState({loading:false})
         if (response.data.status) {
           that.props.changeUid(response.data.uid)
           history.push('/landing')
