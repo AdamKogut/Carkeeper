@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/googlemaps": "^3.30.8",
+    "@types/markerclustererplus": "^2.1.33",
+    "@types/react": "^16.3.12",
     "axios": "^0.18.0",
     "history": "^4.7.2",
     "material-ui": "^0.20.0",
@@ -10,6 +13,7 @@
     "react": "^16.3.1",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.3.1",
+    "react-google-maps": "^9.4.5",
     "react-infinite-scroll-component": "^4.0.2",
     "react-router-dom": "^4.2.2",
     "react-scripts": "^1.1.4"
