@@ -1,0 +1,11 @@
+.home-paragraph{
+  font-size: 24px;
+  text-align: left;
+  margin-top:15px;
+  padding-left: 4px;
+  height: calc(100vh - 57px);
+  margin-top: 0px;
+  /* overflow-x: hidden; */
+  overflow-y: auto;
+  /* overflow: hidden; */
+}
