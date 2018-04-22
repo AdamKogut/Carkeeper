@@ -21,7 +21,7 @@ class HomeBody extends Component {
   }
 
   getRandomColor = () => {
-    return `var(--color${parseInt(Math.random() * 5 + 1,10)})`;
+    return `var(--color${parseInt(Math.random() * 5 + 1, 10)})`;
   }
 
   componentDidMount = () => {
@@ -58,7 +58,7 @@ class HomeBody extends Component {
                 }
               </GridTile>
             );
-            that.setState({ cards: tempCards, max: data.totalResults, keys:keys });
+            that.setState({ cards: tempCards, max: data.totalResults, keys: keys });
           }
         }
       })
@@ -66,6 +66,21 @@ class HomeBody extends Component {
 
   showMore = () => {
     this.setState({ page: this.state.page + 1 }, this.componentDidMount)
+  }
+
+  getCols = () => {
+    let width = window.innerWidth
+      || document.documentElement.clientWidth
+      || document.body.clientWidth;
+    // console.log(width)
+    //console.log(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Mobile/i.test(navigator.userAgent))
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Mobile/i.test(navigator.userAgent) || width < 400)
+      return 1;
+    else if (width < 700)
+      return 2;
+    else if (width < 1000)
+      return 3;
+    return 4;
   }
 
   render() {
@@ -94,8 +109,8 @@ class HomeBody extends Component {
           <hr style={{ borderColor: 'var(--color2)', borderWidth: '3px' }} />
           <h4>Recent Car News</h4>
           <GridList
-            cols={4}
-            style={{paddingRight:'4px'}}
+            cols={this.getCols()}
+            style={{ paddingRight: '4px' }}
           >
             {this.state.cards}
           </GridList>
