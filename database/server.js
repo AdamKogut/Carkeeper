@@ -110,10 +110,13 @@ function test() {
     console.log(x);
   });
 
-  database.addPriorDate(userRef,"436","Test","Chassis Lubrication","2020-1-15","100",{"address":"Adams Home","lat":"100","long":"200"});
 
+  database.addPriorDate(userRef,"436","Test","Chassis Lubrication","2020-1-15","100",{"address":"Adams Home","lat":"100","long":"200"});
   */
   database.checkNotif(userRef, "247");
+  //database.getLatestPriorDate(userRef, "436","Test","Chassis Lubrication", (x) => {
+  //  console.log(x);
+  //});
 }
 
 //encrypt password
@@ -381,7 +384,13 @@ app.post('/ADD-PRIOR-DATE', function (req, res) {
   // Add Increment to Months
   database.getIncrement(userRef, req.body.uid, req.body.carName, req.body.serviceName, (incrementInt) => {
     // Update Next Date
+
+
     var dates = req.body.priorDate.split("-");
+    /*var dates="";
+    database.getLatestPriorDate(userRef, req.body.uid, req.body.carName, req.body.serviceName, (x) => {
+      dates=x;
+    });*/
     for( var i = 0; i < dates.length; i++) {
       dates[i] = +dates[i];
     }

@@ -9,6 +9,7 @@ module.exports = {
     removeCar,
     updateCar,
     addPriorDate,
+		getLatestPriorDate,
     updateNextDate,
     getIncrement,
 		getEmailId,
@@ -207,6 +208,23 @@ function addPriorDate(userRef, uid, carName, serviceName, priorDate, price, loca
       [priorDate]:list
     });
   });
+}
+
+function getLatestPriorDate(userRef, uid, carName, serviceName, callback) {
+	var ref = userRef.child(uid).child("Garage").child(carName).child("Service List").child(serviceName).child("priorDates");
+	var min = new Date(1950,0,1);
+	var latest=null;
+	ref.once("value").then(function(snapshot) {
+	 	snapshot.forEach(function(childSnapshot) {
+			key=childSnapshot.key;
+			var date=new Date(key.substring(0,4),key.substring(key.indexOf('-')+1,key.lastIndexOf('-'))-1,key.substring(key.lastIndexOf('-')+1));
+			if((date-min)>0) {
+				min=date;
+				latest=key;
+			}
+		});
+	});
+	callback(latest);
 }
 
 function updateNextDate(userRef, uid, carName, serviceName, nextDate) {
