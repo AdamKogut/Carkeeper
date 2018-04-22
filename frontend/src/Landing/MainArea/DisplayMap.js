@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Dialog, RaisedButton } from 'material-ui';
-import { GoogleMap } from './GoogleMap';
+import GoogleMap from './GoogleMap';
 //import './DisplayMap.css';
 
 class DisplayMap extends Component {
@@ -27,7 +27,9 @@ class DisplayMap extends Component {
           />
         ]}
       >
-        <GoogleMap {...this.props} />
+        <div style={{ height: '60vh', width:'calc(100% - 50px)' }}>
+          {this.props.displayMap ? <GoogleMap {...this.state} {...this.props} /> : null}
+        </div>
       </Dialog>
     );
   }

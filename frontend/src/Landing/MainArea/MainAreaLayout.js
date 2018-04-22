@@ -59,7 +59,7 @@ class MainAreaLayout extends Component {
           for (let k in response.data[i].priorDates) {
             tempPrior.push(
               <h6 key={k}>
-                {/* {`${k} ${(response.data[i].priorDates[k].price != 'null') ? '$' + response.data[i].priorDates[k].price : null} ${response.data[i].priorDates[k].location.address != undefined ? response.data[i].priorDates[k].location.address : null}`} */}
+                {`On ${k} ${(response.data[i].priorDates[k].price != 'null') ? 'for $' + response.data[i].priorDates[k].price : null} ${response.data[i].priorDates[k].location.address != undefined ? 'at ' + response.data[i].priorDates[k].location.address : null}`}
               </h6>
             )
             locations.push(response.data[i].priorDates[k].location);

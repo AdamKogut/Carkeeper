@@ -39,7 +39,7 @@ export const PlacesWithStandaloneSearchBox = compose(
       bounds={props.bounds}
       onPlacesChanged={props.onPlacesChanged}
     >
-      <TextField fullWidth onChange={props.changeAddress}/>
+      <TextField fullWidth onChange={props.changeAddress} id='google-map-textbox'/>
     </StandaloneSearchBox>
     {props.places.map(({ place_id, formatted_address, geometry: { location } }) =>
       props.changePlace(formatted_address,location.lat(),location.lng())

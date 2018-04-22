@@ -55,7 +55,7 @@ class AddDate extends Component {
   changeAddress=(ev,addr)=>{
     let loc=this.state.location;
     loc.address=addr;
-    this.setState({location:loc},()=>console.log(this.state.location));
+    this.setState({location:loc});
   }
 
   render() {
