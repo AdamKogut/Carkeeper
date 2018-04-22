@@ -7,6 +7,7 @@
     "@types/markerclustererplus": "^2.1.33",
     "@types/react": "^16.3.12",
     "axios": "^0.18.0",
+    "google-maps-react": "^2.0.0",
     "history": "^4.7.2",
     "material-ui": "^0.20.0",
     "material-ui-password-field": "^1.4.1",
