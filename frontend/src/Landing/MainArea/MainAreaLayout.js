@@ -3,6 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 import axios from 'axios'
 import DeleteCarButton from './DeleteCarButton'
 import AddServiceButton from './AddServiceButton'
+import DisplayMap from './DisplayMap'
 import AddDate from './AddDate'
 import './MainArea.css';
 import { Card, CardHeader, CardText, CardActions, FlatButton } from 'material-ui';
@@ -18,6 +19,8 @@ class MainAreaLayout extends Component {
       year: today.getFullYear(),
       objectItem: '',
       addOpen: false,
+      displayMap: false,
+      addresses: [],
       warning: [
         { openIcon: <i className="material-icons warning">&#xE002;</i>, closeIcon: <i className="material-icons warning">&#xE002;</i> },
       ]
@@ -51,11 +54,15 @@ class MainAreaLayout extends Component {
         // console.log(response.data)
         let tempCards = []
         for (let i in response.data) {
-          let tempPrior = []
+          let tempPrior = [];
+          let locations = [];
           for (let k in response.data[i].priorDates) {
             tempPrior.push(
-              <h6 key={k}>{response.data[i].priorDates[k]}</h6>
+              <h6 key={k}>
+                {`On ${k} ${(response.data[i].priorDates[k].price != 'null') ? 'for $' + response.data[i].priorDates[k].price : null} ${response.data[i].priorDates[k].location.address != undefined ? 'at ' + response.data[i].priorDates[k].location.address : null}`}
+              </h6>
             )
+            locations.push(response.data[i].priorDates[k].location);
           }
           // console.log(tempPrior.length)
           tempCards.push(
@@ -80,6 +87,10 @@ class MainAreaLayout extends Component {
                 <FlatButton
                   label='Remove Service'
                   onClick={() => that.handleRemove(i)}
+                />
+                <FlatButton
+                  label='Show Previous Service map'
+                  onClick={() => that.setState({ displayMap: true, addresses: locations })}
                 />
               </CardActions>
             </Card>
@@ -169,6 +180,7 @@ class MainAreaLayout extends Component {
           : null}
         {this.state.cards}
 
+        <DisplayMap {...this.state} close={() => this.setState({ displayMap: false })} />
         <AddDate {...this.props} {...this.state} closeAdd={this.closeAdd} shouldRefresh={this.shouldRefresh} />
       </Col>
     );
