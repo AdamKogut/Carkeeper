@@ -111,6 +111,7 @@ function test() {
   });
 
   */
+  database.checkNotif(userRef, 247);
 
 }
 
