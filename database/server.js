@@ -386,11 +386,11 @@ app.post('/ADD-PRIOR-DATE', function (req, res) {
     // Update Next Date
 
 
-    var dates = req.body.priorDate.split("-");
-    /*var dates="";
+    var dt="";
     database.getLatestPriorDate(userRef, req.body.uid, req.body.carName, req.body.serviceName, (x) => {
-      dates=x;
-    });*/
+      dt=x;
+    });
+    var dates = req.body.dt.split("-");
     for( var i = 0; i < dates.length; i++) {
       dates[i] = +dates[i];
     }

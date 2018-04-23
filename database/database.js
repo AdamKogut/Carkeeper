@@ -213,7 +213,7 @@ function addPriorDate(userRef, uid, carName, serviceName, priorDate, price, loca
 function getLatestPriorDate(userRef, uid, carName, serviceName, callback) {
 	var ref = userRef.child(uid).child("Garage").child(carName).child("Service List").child(serviceName).child("priorDates");
 	var min = new Date(1950,0,1);
-	var latest=null;
+	var latest="";
 	ref.once("value").then(function(snapshot) {
 	 	snapshot.forEach(function(childSnapshot) {
 			key=childSnapshot.key;
@@ -223,8 +223,8 @@ function getLatestPriorDate(userRef, uid, carName, serviceName, callback) {
 				latest=key;
 			}
 		});
+		callback(latest);
 	});
-	callback(latest);
 }
 
 function updateNextDate(userRef, uid, carName, serviceName, nextDate) {
