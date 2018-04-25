@@ -18,8 +18,10 @@ module.exports = {
 		updateUser,
 		removeUser,
 		getUser,
-		checkNotif
+		checkNotif,
 	}
+
+const axios = require('axios');
 
 // Create Functions
 
@@ -267,18 +269,36 @@ function forgotPassword(userRef, email, callback) {
 	ref.once("value").then(function(snapshot) {
     snapshot.forEach(function(childSnapshot) {
   		uid=childSnapshot.key;
+      console.log(uid)
 			var ref2=userRef.child(uid);
 			ref2.once("value").then(function(babySnapshot) {
-				var emailId=babySnapshot.email;
+				var emailId=babySnapshot.val().email;
+        console.log(emailId)
 				var name=babySnapshot.firstname;
-				if(emailId==email) {
+				if(emailId === email) {
 					console.log(email);
-					emailjs.send("gmail","forgot_password",{"email":email,"name":name,"action_url":"bit.ly/CarKeeper"});
+          var data = {
+            service_id: 'gmail',
+            template_id: 'forgot_password',
+            user_id: 'user_dIUsSOu0uyfAzEOurtMFv',
+            template_params: {
+              "email":email,
+              "name":name,
+              "action_url":"bit.ly/CarKeeper"
+            }
+          };
+          axios.post('https://api.emailjs.com/api/v1.0/email/send',{
+            ...data,
+          }).catch((e)=>{
+            console.log(e);
+            callback(false);
+          })
 					callback(true);
+          return;
 				}
 			});
 		});
-		callback(false);
+		//callback(false);
 	});
 }
 
