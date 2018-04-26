@@ -266,6 +266,7 @@ function resetPassword(userRef, uid, oldPassword, newPassword, callback) {
 
 function forgotPassword(userRef, email, callback) {
   var ref = userRef;
+	var found=false;
 	ref.once("value").then(function(snapshot) {
     snapshot.forEach(function(childSnapshot) {
   		uid=childSnapshot.key;
@@ -273,7 +274,8 @@ function forgotPassword(userRef, email, callback) {
 			ref2.once("value").then(function(babySnapshot) {
 				var emailId=babySnapshot.val().email;
 				var name=babySnapshot.firstname;
-				if(emailId === email) {;
+				if(emailId === email) {
+					found=true;
           var data = {
             service_id: 'gmail',
             template_id: 'forgot_password',
@@ -295,7 +297,10 @@ function forgotPassword(userRef, email, callback) {
 				}
 			});
 		});
-		//callback(false);
+		setTimeout(function() {
+			if(!found)
+			callback(false);
+		},1000);
 	});
 }
 

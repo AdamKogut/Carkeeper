@@ -216,6 +216,24 @@ app.post('/RESET-PASSWORD', function (req, res) {
   });
 });
 
+app.post('/FORGOT-PASSWORD', function(req,res) {
+  console.log("Received request for FORGOT PASSWORD");
+  database.forgotPassword(userRef, req.body.email, (userFound) => {
+    if(userFound) {
+      console.log("Email sent");
+      res.json({
+        "status": true
+      });
+    }
+    else {
+      console.log("User not found");
+      res.json({
+        "status": false
+      });
+    }
+  });
+});
+
 app.post('/GET-EMAIL-ID', function (req, res) {
   database.getEmailId(userRef, req.body.uid, (x) => {
     console.log("Received request to get email");
@@ -307,7 +325,7 @@ app.post('/ADD-CUSTOM-SERVICE', function (req, res) {
   setTimeout(function() {
   console.log("Increment: " + increment);
 
-  
+
   database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, increment);
   res.json({
     "status": true
