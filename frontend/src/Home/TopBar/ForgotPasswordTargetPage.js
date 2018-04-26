@@ -12,19 +12,23 @@ class ForgotPasswordTargetPage extends Component {
     this.state = {
       email: '',
       loading: false,
-      pass: ''
+      pass: '',
+      uid:'',
     };
   }
 
   componentDidMount = () => {
     if (history.location.pathname.indexOf('/home/forgot/') === 0) {
       let uid = history.location.pathname.substring(history.location.pathname.lastIndexOf('/') + 1);
+      if(isNaN(uid)){
+        history.push('/');
+      }
       let that = this;
       axios.post('/GET-EMAIL-ID', {
         uid: uid,
       }).then(function (response) {
         // console.log(response.data)
-        that.setState({ email: response.data })
+        that.setState({ email: response.data, uid:uid })
       }).catch(function (error) {
         console.log(error);
       });
@@ -39,10 +43,13 @@ class ForgotPasswordTargetPage extends Component {
     } else {
       this.setState({ loading: true });
       let that = this;
-      axios.post('/SHOULD-FAIL', {
+      axios.post('/CHANGE-PASSWORD', {
         email: this.state.email.toLowerCase(),
+        password:this.state.pass,
+        uid:this.state.uid,
       }).then(function (response) {
-        that.state({ loading: false })
+        // console.log(response.data);
+        that.setState({ loading: false });
         if (response.data.status) {
           alert('Success!')
           history.push('/')

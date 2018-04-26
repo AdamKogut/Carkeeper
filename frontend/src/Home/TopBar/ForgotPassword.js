@@ -41,10 +41,10 @@ class ForgotPassword extends Component {
       axios.post('/FORGOT-PASSWORD', {
         email: this.state.email.toLowerCase(),
       }).then(function (response) {
-        that.state({loading:false})
+        that.setState({loading:false})
         if (response.data.status) {
           alert('Success!')
-          that.setState({open:false, email:''})
+          that.setState({open:false, email:'' })
         } else {
           alert('There is no account with this email');
         }
