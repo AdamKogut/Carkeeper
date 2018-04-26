@@ -204,14 +204,17 @@ function addPriorDate(userRef, uid, carName, serviceName, priorDate, price, loca
 	var list = {};
 	list[priorDate]={};
 	ref.once("value").then(function(snapshot){
-		if(price!="undefined") {
+		if(price!=undefined) {
 			list["price"] = price;
 		}
+		else {
+			list["price"] = "null";
+		}
 		list["location"] = {};
-		if(location.address!="undefined") {
+		if(location.address!=undefined) {
 			list["location"]["address"] = location.address;
 		}
-		if(location.lat!="undefined"&&location.long!="undefined") {
+		if(location.lat!=undefined&&location.long!=undefined) {
 			list["location"]["lat"] = location.lat;
 			list["location"]["long"] = location.long;
 		}
