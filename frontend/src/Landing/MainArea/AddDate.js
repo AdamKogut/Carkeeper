@@ -23,7 +23,7 @@ class AddDate extends Component {
       if (this.state.price === '')
         this.setState({ price: 'null' })
       // console.log(this.props)
-      // console.log(this.state)
+      console.log(this.state)
       axios.post('/ADD-PRIOR-DATE', {
         "uid": this.props.uid,
         carName: this.props.currCar,
@@ -43,7 +43,7 @@ class AddDate extends Component {
   }
 
   changePlace = (address, lat, long) => {
-    this.setState({ location: { address: address, latitude: lat, long: long } });
+    this.setState({ location: { address: address, lat: lat, long: long } });
   }
 
   changeDate = (event, date) => {

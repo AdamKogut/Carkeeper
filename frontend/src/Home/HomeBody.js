@@ -104,6 +104,7 @@ class HomeBody extends Component {
           <p>
             CarKeeper is an application that is designed to store information about your car's service schedule. You can add as many cars as you want,
             inside each car as many services you want with either the suggested interval or a custom service interval.
+            <br />
             If you have any questions or suggestions you can email us at carkeepercs252@gmail.com
         </p>
           <hr style={{ borderColor: 'var(--color2)', borderWidth: '3px' }} />

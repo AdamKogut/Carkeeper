@@ -16,8 +16,8 @@ export class GoogleMap extends Component {
     for (let i in this.props.addresses) {
       arr.push(
         <Marker
-          title={this.props.addresses[i].address}
-          position={{ lat: this.props.addresses[i].lat, lng: this.props.addresses[i].long }}
+          title={(this.props.addresses[i].price!=null)?'$'+this.props.addresses[i].price+' at '+this.props.addresses[i].location.address:this.props.addresses[i].location.address}
+          position={{ lat: this.props.addresses[i].location.lat, lng: this.props.addresses[i].location.long }}
           key={i}
         />
       )
@@ -26,13 +26,13 @@ export class GoogleMap extends Component {
   }
 
   render() {
-    // console.log(this.props.google)
-    if (this.props.addresses[0].lat != null) {
+    // console.log(this.props)
+    if (this.props.addresses.length>0&&this.props.addresses[0].location.lat != null) {
       return (
         <Map google={this.props.google}
           zoom={14}
           style={{ height: '60vh', width:'calc(100% - 50px)', position: 'relative' }}
-          initialCenter={{ lat: this.props.addresses[0].lat, lng: this.props.addresses[0].long }}
+          initialCenter={{ lat: this.props.addresses[0].location.lat, lng: this.props.addresses[0].location.long }}
         >
           {this.renderMarkers()}
         </Map>

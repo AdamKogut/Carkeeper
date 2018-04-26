@@ -45,7 +45,9 @@ class AddService extends Component {
   }
 
   addService = () => {
-    let timeout=window.setTimeout(this.forceUpdate,1000);
+    let that=this;
+    let timeout=window.setTimeout(that.forceUpdate,1000);
+    // console.log(this.state)
     if (this.state.serviceName === '') {
       alert('Please fill out the service name');
     } else {
@@ -60,6 +62,7 @@ class AddService extends Component {
           serviceName: sn,
           incrementInt: this.state.interval,
         }).then(function (response) {
+          console.log(response.data)
           if (response.data.status) {
             console.log("1")
             window.clearTimeout(timeout)

@@ -59,17 +59,19 @@ class MainAreaLayout extends Component {
           for (let k in response.data[i].priorDates) {
             tempPrior.push(
               <h6 key={k}>
-                {`On ${k} ${(response.data[i].priorDates[k].price != 'null') ? 'for $' + response.data[i].priorDates[k].price : null} ${response.data[i].priorDates[k].location.address != undefined ? 'at ' + response.data[i].priorDates[k].location.address : null}`}
+                {`On ${k} ${(response.data[i].priorDates[k].price !== 'null') ? 'for $' + response.data[i].priorDates[k].price : null} ${response.data[i].priorDates[k].location.address != undefined ? 'at ' + response.data[i].priorDates[k].location.address : null}`}
               </h6>
             )
-            locations.push(response.data[i].priorDates[k].location);
+            if (response.data[i].priorDates[k].location.lat != null) {
+              locations.push(response.data[i].priorDates[k]);
+            }
           }
           // console.log(tempPrior.length)
           tempCards.push(
             <Card key={i} style={{ textAlign: 'left' }}>
               <CardHeader
                 title={<h3>{i}</h3>}
-                subtitle={<h4>Next service due: {response.data[i].nextDate}</h4>}
+                subtitle={response.data[i].nextDate!=''?<h4>Next service due: {response.data[i].nextDate}</h4>:null}
                 actAsExpander
                 showExpandableButton
                 {...that.state.warning[that.checkDate(response.data[i].nextDate)]}
@@ -77,7 +79,7 @@ class MainAreaLayout extends Component {
               <CardText expandable style={{ marginTop: '-40px' }}>
                 {/* <h4>Next service due: {response.data[i].nextDate}</h4> */}
                 {(tempPrior.length > 0) ? <h5>Previous services: </h5> : null}
-                {tempPrior}
+                {tempPrior.reverse()}
               </CardText>
               <CardActions expandable style={{ marginTop: '-20px' }}>
                 <FlatButton
@@ -120,6 +122,9 @@ class MainAreaLayout extends Component {
   }
 
   checkDate = (toCheck) => {
+    if(toCheck===''){
+      return 1;
+    }
     let splitted = toCheck.split('-')
     if (splitted[0] > this.state.year) {
       return 1
