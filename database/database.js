@@ -68,7 +68,7 @@ function addCar(userRef, uid, carName, make, model, year, level) {
   });
 }
 
-function addService(userRef, uid, carName, serviceName, priorDate, nextDate, increment) {
+function addService(userRef, uid, carName, serviceName, increment) {
   var ref = userRef.child(uid).child("Garage").child(carName).child("Service List");
   var serviceCount;
   ref.once("value").then(function(snapshot){
@@ -78,8 +78,8 @@ function addService(userRef, uid, carName, serviceName, priorDate, nextDate, inc
       [serviceName]: ""
     })
     ref.child(serviceName).update({
-      "priorDates": priorDate,
-      "nextDate": nextDate,
+      "priorDates": "",
+      "nextDate": "",
       "increment": increment
     })
   });
