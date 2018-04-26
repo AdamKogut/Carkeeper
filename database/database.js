@@ -19,6 +19,7 @@ module.exports = {
 		removeUser,
 		getUser,
 		checkNotif,
+		checkAllNotif
 	}
 
 const axios = require('axios');
@@ -355,7 +356,7 @@ function getUser(userRef, uid, callback) {
 	});
 }
 
-function checkNotif(userRef, uid, callback) {
+function checkNotif(userRef, uid) {
 	var ref = userRef.child(uid).child("Garage");
 	var json = {};
 	var servicesDue="";
@@ -395,32 +396,36 @@ function checkNotif(userRef, uid, callback) {
 				}
     	});
   	});
-	 setTimeout(function() {
-		 //console.log(servicesDue)
-		 if(numServicesDue>0) {
- 			getUser(userRef, uid, (user) => {
- 				var data = {
- 					service_id: 'gmail',
- 					template_id: 'service_soon',
- 					user_id: 'user_dIUsSOu0uyfAzEOurtMFv',
- 					template_params: {
- 						"email":user["email"],
- 						"service":servicesDue,
- 						"name":user["firstname"],
- 						"date":dateDue,
- 						"action_url":"bit.ly/CarKeeper"
+		setTimeout(function() {
+			if(numServicesDue>0) {
+ 				getUser(userRef, uid, (user) => {
+ 					var data = {
+ 						service_id: 'gmail',
+ 						template_id: 'service_soon',
+ 						user_id: 'user_dIUsSOu0uyfAzEOurtMFv',
+ 						template_params: {
+ 							"email":user["email"],
+ 							"service":servicesDue,
+ 							"name":user["firstname"],
+ 							"date":dateDue,
+ 							"action_url":"bit.ly/CarKeeper"
+ 						}
  					}
- 				}
- 				axios.post('https://api.emailjs.com/api/v1.0/email/send',{
-           ...data,
-         }).catch((e)=>{
+ 					axios.post('https://api.emailjs.com/api/v1.0/email/send',{
+           	...data,
+         	}).catch((e)=>{
            console.log(e);
-           callback(false);
-         })
- 				callback(true);
-         return;
- 			});
- 		}
-	 },3000);
+				 })
+				 return;
+ 				});
+ 			}
+		},1000);
+	}
 
+	function checkAllNotif(userRef) {
+		userRef.once("value").then(function(snapshot) {
+	  	snapshot.forEach(function(childSnapshot) {
+	    	checkNotif(userRef,childSnapshot.key);
+			});
+		});
 	}
