@@ -79,7 +79,7 @@ function addService(userRef, uid, carName, serviceName, increment) {
       [serviceName]: ""
     })
     ref.child(serviceName).update({
-      "priorDates": "",
+      "priorDates": {},
       "nextDate": "",
       "increment": increment
     })
@@ -202,13 +202,18 @@ function updateCar(userRef, uid, carName, make, model, year, level) {
 function addPriorDate(userRef, uid, carName, serviceName, priorDate, price, location) {
   var ref = userRef.child(uid).child("Garage").child(carName).child("Service List").child(serviceName).child("priorDates");
 	var list = {};
+	list[priorDate]={};
 	ref.once("value").then(function(snapshot){
 		list["price"] = price;
 		list["location"] = {};
-		list["location"]["address"] = location.address;
-		list["location"]["lat"] = location.lat;
-		list["location"]["long"] = location.long;
-    ref.update({
+		if(location.address!="undefined") {
+			list["location"]["address"] = location.address;
+		}
+		if(location.lat!="undefined"&&location.long!="undefined") {
+			list["location"]["lat"] = location.lat;
+			list["location"]["long"] = location.long;
+		}
+		ref.update({
       [priorDate]:list
     });
   });
