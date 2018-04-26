@@ -221,11 +221,20 @@ app.post('/CHANGE-PASSWORD', function (req, res) {
   console.log('Received request for CHANGE PASSWORD:');
   //create ENCRYPTED PASSWORD
   var encryptedNewPassword = encrypt(req.body.password);
-  database.changePassword(userRef, req.body.uid, encryptedNewPassword);
-  res.json({
-    "status": true
+  database.changePassword(userRef, req.body.uid, encryptedNewPassword, (x) => {
+      if(x) {
+        res.json({
+          "status": true
+        });
+        console.log("Password Changed");
+      }
+      else {
+        res.json({
+          "status": false
+        });
+        console.log("Error");
+      }
   });
-  console.log("Password Changed");
 });
 
 app.post('/FORGOT-PASSWORD', function(req,res) {

@@ -276,11 +276,17 @@ function resetPassword(userRef, uid, oldPassword, newPassword, callback) {
   });
 }
 
-function changePassword(userRef, uid, newPassword) {
+function changePassword(userRef, uid, newPassword, callback) {
   var ref = userRef.child(uid);
-  ref.update({
-		"password": newPassword
-	});
+	if(newPassword!="undefined") {
+		ref.update({
+			"password": newPassword
+		});
+		callback(true);
+	}
+	else {
+		callback(false);
+	}
 }
 
 function forgotPassword(userRef, email, callback) {
