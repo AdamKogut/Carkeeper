@@ -204,7 +204,9 @@ function addPriorDate(userRef, uid, carName, serviceName, priorDate, price, loca
 	var list = {};
 	list[priorDate]={};
 	ref.once("value").then(function(snapshot){
-		list["price"] = price;
+		if(price!="undefined") {
+			list["price"] = price;
+		}
 		list["location"] = {};
 		if(location.address!="undefined") {
 			list["location"]["address"] = location.address;
