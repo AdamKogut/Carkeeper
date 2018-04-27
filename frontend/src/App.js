@@ -12,8 +12,8 @@ axios.defaults.baseURL = "https://carkeeper-server.herokuapp.com/";
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state={
-      uid:'',
+    this.state = {
+      uid: '',
     }
     try {
       const serializedState = localStorage.getItem('carkeeper-app')
@@ -35,8 +35,8 @@ class App extends Component {
     }
   }
 
-  changeUid=(uid)=>{
-    this.setState({uid:uid},this.saveState)
+  changeUid = (uid) => {
+    this.setState({ uid: uid }, this.saveState)
   }
 
   componentDidMount = () => {
@@ -48,22 +48,25 @@ class App extends Component {
 
   muiTheme = getMuiTheme({
     palette: {
-      primary: { main: '#73C2E7' },
-      secondary: { main: '#9ECEF4' }
+      primary1Color: 'var(--color3)',
+      accent1Color: 'var(--color4)',
+      textColor: 'var(--color5)',
+      alternateTextColor: 'var(--color1)',
+      canvasColor: 'var(--color1)',
     }
   })
 
   render() {
-    let toSend={
+    let toSend = {
       ...this.state,
-      changeUid:this.changeUid,
+      changeUid: this.changeUid,
     }
     return (
       <MuiThemeProvider muiTheme={this.muiTheme}>
         <Grid className="App fluid">
           <Switch>
-            <Route path='/home' render={() => <HomeLayout {...toSend}/>} />
-            <Route path='/landing' render={() => <LandingLayout uid={this.state.uid}/>} />
+            <Route path='/home' render={() => <HomeLayout {...toSend} />} />
+            <Route path='/landing' render={() => <LandingLayout uid={this.state.uid} />} />
             <Route path="/" render={() => <Redirect to='/home' />} />
           </Switch>
         </Grid>

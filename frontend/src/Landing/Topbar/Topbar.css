@@ -3,8 +3,8 @@
 }
 
 .drawer-title{
-  background-color:var(--main);
-  color:#F8FBF5;
+  background-color:var(--color3);
+  color:var(--color1);
   height:64px;
   margin-top:-20px;
 }

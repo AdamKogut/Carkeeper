@@ -3,6 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 import axios from 'axios'
 import DeleteCarButton from './DeleteCarButton'
 import AddServiceButton from './AddServiceButton'
+import DisplayMap from './DisplayMap'
 import AddDate from './AddDate'
 import './MainArea.css';
 import { Card, CardHeader, CardText, CardActions, FlatButton } from 'material-ui';
@@ -18,6 +19,8 @@ class MainAreaLayout extends Component {
       year: today.getFullYear(),
       objectItem: '',
       addOpen: false,
+      displayMap: false,
+      addresses: [],
       warning: [
         { openIcon: <i className="material-icons warning">&#xE002;</i>, closeIcon: <i className="material-icons warning">&#xE002;</i> },
       ]
@@ -40,7 +43,7 @@ class MainAreaLayout extends Component {
   }
 
   getCards = (props) => {
-    this.setState({cards:[]})
+    this.setState({ cards: [] })
     if (props.currCar !== '') {
       let that = this
       // console.log(props.currCar)
@@ -51,18 +54,24 @@ class MainAreaLayout extends Component {
         // console.log(response.data)
         let tempCards = []
         for (let i in response.data) {
-          let tempPrior = []
+          let tempPrior = [];
+          let locations = [];
           for (let k in response.data[i].priorDates) {
             tempPrior.push(
-              <h6 key={k}>{response.data[i].priorDates[k]}</h6>
+              <h6 key={k}>
+                {`On ${k} ${(response.data[i].priorDates[k].price !== 'null') ? 'for $' + response.data[i].priorDates[k].price : null} ${response.data[i].priorDates[k].location.address != undefined ? 'at ' + response.data[i].priorDates[k].location.address : null}`}
+              </h6>
             )
+            if (response.data[i].priorDates[k].location.lat != null) {
+              locations.push(response.data[i].priorDates[k]);
+            }
           }
           // console.log(tempPrior.length)
           tempCards.push(
             <Card key={i} style={{ textAlign: 'left' }}>
               <CardHeader
                 title={<h3>{i}</h3>}
-                subtitle={<h4>Next service due: {response.data[i].nextDate}</h4>}
+                subtitle={response.data[i].nextDate!=''?<h4>Next service due: {response.data[i].nextDate}</h4>:null}
                 actAsExpander
                 showExpandableButton
                 {...that.state.warning[that.checkDate(response.data[i].nextDate)]}
@@ -70,7 +79,7 @@ class MainAreaLayout extends Component {
               <CardText expandable style={{ marginTop: '-40px' }}>
                 {/* <h4>Next service due: {response.data[i].nextDate}</h4> */}
                 {(tempPrior.length > 0) ? <h5>Previous services: </h5> : null}
-                {tempPrior}
+                {tempPrior.reverse()}
               </CardText>
               <CardActions expandable style={{ marginTop: '-20px' }}>
                 <FlatButton
@@ -80,6 +89,10 @@ class MainAreaLayout extends Component {
                 <FlatButton
                   label='Remove Service'
                   onClick={() => that.handleRemove(i)}
+                />
+                <FlatButton
+                  label='Show Previous Service map'
+                  onClick={() => that.setState({ displayMap: true, addresses: locations })}
                 />
               </CardActions>
             </Card>
@@ -109,6 +122,9 @@ class MainAreaLayout extends Component {
   }
 
   checkDate = (toCheck) => {
+    if(toCheck===''){
+      return 1;
+    }
     let splitted = toCheck.split('-')
     if (splitted[0] > this.state.year) {
       return 1
@@ -129,7 +145,6 @@ class MainAreaLayout extends Component {
   }
 
   handleRemove = (name) => {
-    let flag = true
     axios.post('/REMOVE-SERVICE', {
       "uid": this.props.uid,
       carName: this.props.currCar,
@@ -137,14 +152,9 @@ class MainAreaLayout extends Component {
     }).then(function (response) {
       // console.log(response.data)
     }).catch(function (error) {
-      console.log(error);
-      alert('Something happened, please try again')
-      flag = false
     });
-    if (flag) {
-      alert('Service Removed')
-      this.getCards(this.props)
-    }
+    alert('Service Removed')
+    this.getCards(this.props)
   }
 
   render() {
@@ -175,7 +185,8 @@ class MainAreaLayout extends Component {
           : null}
         {this.state.cards}
 
-        <AddDate {...this.props} {...this.state} closeAdd={this.closeAdd} shouldRefresh={this.shouldRefresh}/>
+        <DisplayMap {...this.state} close={() => this.setState({ displayMap: false })} />
+        <AddDate {...this.props} {...this.state} closeAdd={this.closeAdd} shouldRefresh={this.shouldRefresh} />
       </Col>
     );
   }

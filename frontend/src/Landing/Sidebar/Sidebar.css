@@ -1,5 +1,5 @@
 .desktop-sidebar{
-  background-color: #eee;
+  background-color: var(--color3);
   text-align: left;
   overflow-x: hidden;
   overflow-y: auto;
@@ -8,10 +8,11 @@
 }
 
 .car-area-sidebar{
-  height:calc(100vh - 57px - 70px - 30px);
+  height:calc(100vh - 57px - 50px - 30px);
   margin-bottom: 20px;
   overflow-x: hidden;
   overflow-y: auto;
+  margin-top:-20px;
 }
 
 .mobile{

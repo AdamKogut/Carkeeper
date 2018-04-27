@@ -1,6 +1,10 @@
 :root{
-  --main:#50C2C4;
-  /*overflow: hidden;*/
+  --color1:#E2E2E6;
+  --color2:#72A5C1;
+  --color3:#2E599F;
+  --color4:#58698D;
+  --color5:#151421;
+  overflow: hidden;
 }
 
 .App {
@@ -8,6 +12,7 @@
   width:100vw;
   overflow: hidden;
   font-family: 'Roboto', sans-serif;
+  color:var(--color5);
 }
 
 .App-title {

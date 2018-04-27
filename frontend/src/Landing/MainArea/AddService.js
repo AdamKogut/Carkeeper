@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dialog, RaisedButton, AutoComplete, DatePicker, DropDownMenu, MenuItem } from 'material-ui';
+import { Dialog, RaisedButton, AutoComplete, DropDownMenu, MenuItem } from 'material-ui';
 import axios from 'axios'
 //import './AddService.css';
 
@@ -10,7 +10,6 @@ class AddService extends Component {
     this.state = {
       dataSource: [],
       checkItems: [],
-      serviceDate: '',
       serviceName: '',
       interval: 'undefined'
     }
@@ -33,12 +32,6 @@ class AddService extends Component {
     });
   }
 
-  changeDate = (event, date) => {
-    let stringDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-    // console.log(stringDate)
-    this.setState({ serviceDate: stringDate });
-  }
-
   updateText = (searchText) => {
     this.setState({ serviceName: searchText });
   }
@@ -52,11 +45,11 @@ class AddService extends Component {
   }
 
   addService = () => {
-    let timeout=window.setTimeout(this.forceUpdate,1000);
+    let that=this;
+    let timeout=window.setTimeout(that.forceUpdate,1000);
+    // console.log(this.state)
     if (this.state.serviceName === '') {
       alert('Please fill out the service name');
-    } else if (this.state.serviceDate === '') {
-      alert('Please add the date of the service')
     } else {
       let sn = "";
       let that = this
@@ -66,10 +59,10 @@ class AddService extends Component {
         axios.post('/ADD-SERVICE', {
           "uid": this.props.uid,
           carName: this.props.currCar,
-          priorDate: this.state.serviceDate,
           serviceName: sn,
           incrementInt: this.state.interval,
         }).then(function (response) {
+          console.log(response.data)
           if (response.data.status) {
             console.log("1")
             window.clearTimeout(timeout)
@@ -88,7 +81,6 @@ class AddService extends Component {
         axios.post('/ADD-CUSTOM-SERVICE', {
           "uid": this.props.uid,
           carName: this.props.currCar,
-          priorDate: this.state.serviceDate,
           serviceName: sn,
           incrementInt: this.state.interval,
         }).then(function (response) {
@@ -97,7 +89,7 @@ class AddService extends Component {
             window.clearTimeout(timeout)
             alert('Successfully Added')
             that.props.shouldRefresh()
-            that.setState({ serviceDate: '', serviceName: '', interval: 'undefined' })
+            that.setState({ serviceName: '', interval: 'undefined' })
           } else {
             alert('Something went wrong, please try again')
           }
@@ -161,11 +153,6 @@ class AddService extends Component {
           dataSource={this.state.dataSource}
           onUpdateInput={this.updateText}
           filter={(searchText, key) => searchText !== '' && key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1}
-        />
-        <DatePicker
-          hintText='Add date of service'
-          fullWidth
-          onChange={this.changeDate}
         />
         <h5>Optional custom service interval</h5>
         <h6>Will default to the general service schedule interval for the part or 3 months if not in the list</h6>

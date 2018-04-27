@@ -20,7 +20,7 @@ class MobileSidebar extends Component {
 
   handleClick = (name, info) => {
     let tempColor = []
-    tempColor[name] = { style: { backgroundColor: '#CCC' } }
+    tempColor[name] = { style: { backgroundColor: 'var(--color2)' } }
     // console.log(tempColor)
     this.props.changeChat(name, info)
     this.setState({ colors: tempColor }, this.changeColor)
@@ -44,7 +44,7 @@ class MobileSidebar extends Component {
             className={this.state.cars[i].props.children.props.className}
             onClick={this.state.cars[i].props.children.props.onClick}
             rightIcon={this.state.cars[i].props.children.props.rightIcon}
-            // hoverColor='#F95498B0'
+            // hoverColor='var(--color4)'
             {...this.state.colors[this.state.cars[i].key]}
           />
         </Paper>
@@ -71,7 +71,7 @@ class MobileSidebar extends Component {
                 onClick={() => that.handleClick(i, response.data[i])}
                 primaryText={i}
                 secondaryText={`${response.data[i].year} ${response.data[i].make} ${response.data[i].model} ${response.data[i].level}`}
-                // hoverColor=''
+                // hoverColor='var(--color4)'
                 {...that.state.colors[i]}
               />
             </Paper>
