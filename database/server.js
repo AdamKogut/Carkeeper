@@ -61,7 +61,7 @@ function test() {
     else {
       console.log("Incorrect Username and Password");
     }
-  });
+
 
    database.addCar(userRef, "1111", "My First car", "make", "model", "year", "level");
    database.addCar(userRef, "1111", "My Second car", "make2", "model2", "year2", "level2");
@@ -89,13 +89,43 @@ function test() {
 
   database.updateCar(userRef, "2222", "My First car", "undefined", "undefined", "2016", "undefined");
 
-  database.addPriorDate(userRef, "1111", "My First car", "Engine Oil", "2019-1-15");
+  //database.addPriorDate(userRef, "1111", "My First car", "Engine Oil", "2019-1-15");
   database.updateNextDate(userRef, "1111", "My First car", "Engine Oil", "2019-1-15");
 
   database.getIncrement(userRef, "1111", "My First car", "Engine Oil", (x) => {
     console.log(x);
   });
+
+  database.getEmailId(userRef, "1111", (x) => {
+    console.log(x);
+  });
+
+  database.resetPassword(userRef, "2222", "something", "something2");
+
+  database.updateUser(userRef, "2222","first2","last2","4081413391");
+
+  database.removeUser(userRef, "688");
+
+  database.getUser(userRef, "1111", (x) => {
+    console.log(x);
+  });
+
+
+  database.addPriorDate(userRef,"436","Test","Chassis Lubrication","2020-1-15","100",{"address":"Adams Home","lat":"100","long":"200"});
   */
+  //database.checkNotif(userRef, "247");
+/*  database.forgotPassword(userRef, "basu12@purdue.edu", (cb) => {
+    console.log(cb);
+  });*/
+
+  /*database.checkNotif(userRef, "247", (cb) => {
+    console.log(cb);
+  });*/
+
+  //database.getLatestPriorDate(userRef, "436","Test","Chassis Lubrication", (x) => {
+  //  console.log(x);
+  //});
+  //database.checkAllNotif(userRef);
 }
 
 //encrypt password
@@ -133,7 +163,7 @@ app.post('/CREATE-USER', function (req, res) {
   console.log("Received request to create user");
   var uid = UID(req.body.email); // username is their email
   var encryptedPassword = encrypt(req.body.password);
-  database.createUser(userRef, uid, req.body.email, req.body.firstname, req.body.lastname, req.body.phone, encryptedPassword);
+  database.createUser(userRef, uid, req.body.email, req.body.firstname, req.body.lastname, req.body.phone, encryptedPassword, req.body.notifPhone, req.body.notifEmail);
   res.send(uid);
   console.log("New User Created");
 });
@@ -165,10 +195,110 @@ app.post('/LOGIN', function (req, res) {
   });
 });
 
+
+app.post('/RESET-PASSWORD', function (req, res) {
+  console.log('Received request for RESET PASSWORD:');
+  //create ENCRYPTED PASSWORD
+  var encryptedOldPassword = encrypt(req.body.oldPassword);
+  var encryptedNewPassword = encrypt(req.body.newPassword);
+  database.resetPassword(userRef, req.body.uid, encryptedOldPassword, encryptedNewPassword, (x) => {
+    if(x == true) {
+      res.json({
+        "status": true
+      });
+      console.log("Password reset");
+    }
+    else {
+      res.json({
+        "status": false
+      });
+      console.log("Incorrect Password");
+    }
+  });
+});
+
+app.post('/CHANGE-PASSWORD', function (req, res) {
+  console.log('Received request for CHANGE PASSWORD:');
+  //create ENCRYPTED PASSWORD
+  var encryptedNewPassword = encrypt(req.body.password);
+  database.changePassword(userRef, req.body.uid, encryptedNewPassword, (x) => {
+      if(x) {
+        res.json({
+          "status": true
+        });
+        console.log("Password Changed");
+      }
+      else {
+        res.json({
+          "status": false
+        });
+        console.log("Error");
+      }
+  });
+});
+
+app.post('/FORGOT-PASSWORD', function(req,res) {
+  console.log("Received request for FORGOT PASSWORD");
+  database.forgotPassword(userRef, req.body.email, (userFound) => {
+    if(userFound) {
+      console.log("Email sent");
+      res.json({
+        "status": true
+      });
+    }
+    else {
+      console.log("User not found");
+      res.json({
+        "status": false
+      });
+    }
+  });
+});
+
+app.post('/GET-EMAIL-ID', function (req, res) {
+  database.getEmailId(userRef, req.body.uid, (x) => {
+    console.log("Received request to get email");
+    res.send(x);
+  });
+  console.log("Returned Email Id");
+});
+
+app.post('/GET-USER', function(req, res) {
+  database.getUser(userRef, req.body.uid, (x) => {
+    console.log("Received request to get user");
+    res.send(x);
+  });
+  console.log("Returned User");
+});
+
+app.post('/UPDATE-USER', function (req, res) {
+  console.log("Request to update car received");
+  database.updateUser(userRef, req.body.uid, req.body.firstname, req.body.lastname, req.body.phone, req.body.notifPhone, req.body.notifEmail);
+  console.log("User Updated");
+});
+
+app.post('/REMOVE-USER', function (req, res) {
+  console.log("Request to remove user "+req.body.uid+" received");
+  database.removeUser(userRef, req.body.uid, encrypt(req.body.password), (x) => {
+      if(x) {
+        console.log("User Removed");
+        res.json({
+          "status": true
+        });
+      }
+      else {
+        console.log("Incorrect Password");
+        res.json({
+          "status": false
+        });
+      }
+  });
+});
+
 // Add Car
 app.post('/ADD-CAR', function (req, res) {
   console.log("Received request to add car");
-  database.addCar(userRef, req.body.uid, req.body.make, req.body.model, req.body.year, req.body.level);
+  database.addCar(userRef, req.body.uid, req.body.carName, req.body.make, req.body.model, req.body.year, req.body.level);
   console.log("New Car Added");
 });
 
@@ -177,6 +307,7 @@ app.post('/ADD-SERVICE', function (req, res) {
   console.log("Received request to add service");
   // Find increment using lists and set next Date
   var nextDate, increment, incrementInt;
+  //console.log(incrementInt);
   if (req.body.incrementInt != "undefined") {
       incrementInt = req.body.incrementInt;
       increment = incrementInt + " months";
@@ -190,27 +321,15 @@ app.post('/ADD-SERVICE', function (req, res) {
     increment = "12 months";
     incrementInt = 12;
   }
+  setTimeout(function() {
   console.log("Increment: " + increment);
 
-  // Use prior date to calculate next date
-  var dates = req.body.priorDate.split("-");
-  for( var i = 0; i < dates.length; i++) {
-    dates[i] = +dates[i];
-  }
-  // Add Increment to Months
-  dates[1] += incrementInt;
-  if (dates[1] > 12) {
-    dates[1] -= 12;
-    dates[0] += 1;
-  }
-  nextDate = dates[0] + "-" + dates[1] + "-" + dates[2];
-  console.log("Next Date: " + nextDate);
-
-  database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, [req.body.priorDate], nextDate, increment);
+  database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, increment);
   res.json({
     "status": true
   });
   console.log("New service added");
+},1000);
 });
 
 app.post('/ADD-CUSTOM-SERVICE', function (req, res) {
@@ -224,32 +343,21 @@ app.post('/ADD-CUSTOM-SERVICE', function (req, res) {
     increment = "3 months";
     incrementInt = 3;
   }
+  setTimeout(function() {
   console.log("Increment: " + increment);
 
-  // Use prior date to calculate next date
-  var dates = req.body.priorDate.split("-");
-  for( var i = 0; i < dates.length; i++) {
-    dates[i] = +dates[i];
-  }
-  // Add Increment to Months
-  dates[1] += incrementInt;
-  if (dates[1] > 12) {
-    dates[1] -= 12;
-    dates[0] += 1;
-  }
-  nextDate = dates[0] + "-" + dates[1] + "-" + dates[2];
-  console.log("Next Date: " + nextDate);
 
-  database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, [req.body.priorDate], nextDate, increment);
+  database.addService(userRef, req.body.uid, req.body.carName, req.body.serviceName, increment);
   res.json({
     "status": true
   });
   console.log("New custom service added");
+},1000);
 });
 
 app.post('/GET-GARAGE', function (req, res) {
   console.log("Received request to get Garage");
-  //console.log("UID: " + req.body.uid);
+  console.log("UID: " + req.body.uid);
   database.getGarage(userRef, req.body.uid, (x) => {
     res.send(x);
   })
@@ -280,6 +388,9 @@ app.post('/REMOVE-CAR', function (req, res) {
 app.post('/UPDATE-CAR', function (req, res) {
   console.log("Request to remove car received");
   database.updateCar(userRef, req.body.uid, req.body.carName, req.body.make, req.body.model, req.body.year, req.body.level);
+  res.json({
+    "status": true
+  });
   console.log("Car Removed");
 });
 
@@ -293,31 +404,38 @@ app.post('/GET-ALL-SERVICES', function (req, res) {
 app.post('/ADD-PRIOR-DATE', function (req, res) {
   console.log("Request to all prior date received");
   // Add Prior date to Prior Dates list
-  database.addPriorDate(userRef, req.body.uid, req.body.carName, req.body.serviceName, req.body.priorDate);
+  database.addPriorDate(userRef, req.body.uid, req.body.carName, req.body.serviceName, req.body.priorDate, req.body.price, req.body.location);
 
   // Add Increment to Months
   database.getIncrement(userRef, req.body.uid, req.body.carName, req.body.serviceName, (incrementInt) => {
     // Update Next Date
-    var dates = req.body.priorDate.split("-");
-    for( var i = 0; i < dates.length; i++) {
-      dates[i] = +dates[i];
-    }
 
-    console.log("Increment: " + incrementInt);
-    dates[1] += incrementInt;
-    if (dates[1] > 12) {
-      dates[1] -= 12;
-      dates[0] += 1;
-    }
-    var nextDate = dates[0] + "-" + dates[1] + "-" + dates[2];
-    console.log("Next Date: " + nextDate);
 
-    database.updateNextDate(userRef, req.body.uid, req.body.carName, req.body.serviceName, nextDate);
+    var dt="";
+    database.getLatestPriorDate(userRef, req.body.uid, req.body.carName, req.body.serviceName, (x) => {
+      dt=x;
+      var dates = dt.split("-");
+      for( var i = 0; i < dates.length; i++) {
+        dates[i] = +dates[i];
+      }
 
-    res.json({
-      "status": true
+      console.log("Increment: " + incrementInt);
+      dates[1] += incrementInt;
+      if (dates[1] > 12) {
+        dates[1] -= 12;
+        dates[0] += 1;
+      }
+      var nextDate = dates[0] + "-" + dates[1] + "-" + dates[2];
+      console.log("Next Date: " + nextDate);
+
+      database.updateNextDate(userRef, req.body.uid, req.body.carName, req.body.serviceName, nextDate);
+
+      res.json({
+        "status": true
+      });
+      console.log("Prior date added and next date updated");
     });
-    console.log("Prior date added and next date updated");
+
   });
 });
 
@@ -329,9 +447,11 @@ app.listen(port, function () {
   console.log('Testing begins, check database');
   test();
   console.log('Testing done');
-
   console.log('Database setup done');
   console.log('App listening on port: ' + port + '!');
+  setInterval(function() {
+    database.checkAllNotif(userRef);
+  }, 1000*60*60*24);
 });
 
 // error handler

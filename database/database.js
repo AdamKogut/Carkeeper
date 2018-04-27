@@ -9,13 +9,38 @@ module.exports = {
     removeCar,
     updateCar,
     addPriorDate,
+		getLatestPriorDate,
     updateNextDate,
-    getIncrement
+    getIncrement,
+		getEmailId,
+		resetPassword,
+		changePassword,
+		forgotPassword,
+		updateUser,
+		removeUser,
+		getUser,
+		checkNotif,
+		checkAllNotif
 	}
+
+const axios = require('axios');
+
+var accountSid = 'AC4615710220888608aac1e3990b7d66e0';
+var authToken = '98a9c0454eb911a41f66d864d151fd25';
+
+var twilio = require('twilio');
+var client = new twilio(accountSid, authToken);
+
+client.messages.create({
+    body: 'You have a service due tomorrow for asdf: Automatic Transmission Fluid',
+    to: '+4085057179',
+    from: '+18315349182'
+})
+.then((message) => console.log(message.sid));
 
 // Create Functions
 
-function createUser(userRef, uid, email, firstname, lastname, phone, password) {
+function createUser(userRef, uid, email, firstname, lastname, phone, password, notifPhone, notifEmail) {
   userRef.update({
     [uid]:"novalue"
   });
@@ -25,7 +50,9 @@ function createUser(userRef, uid, email, firstname, lastname, phone, password) {
     "lastname": lastname,
     "phone": phone,
     "password": password,
-    "Garage": ""
+    "Garage": "",
+		"notifPhone": notifPhone,
+		"notifEmail": notifEmail,
   });
   userRef.child(uid).child("Garage").update({
     "carCount": 0
@@ -56,7 +83,7 @@ function addCar(userRef, uid, carName, make, model, year, level) {
   });
 }
 
-function addService(userRef, uid, carName, serviceName, priorDate, nextDate, increment) {
+function addService(userRef, uid, carName, serviceName, increment) {
   var ref = userRef.child(uid).child("Garage").child(carName).child("Service List");
   var serviceCount;
   ref.once("value").then(function(snapshot){
@@ -66,8 +93,8 @@ function addService(userRef, uid, carName, serviceName, priorDate, nextDate, inc
       [serviceName]: ""
     })
     ref.child(serviceName).update({
-      "priorDates": priorDate,
-      "nextDate": nextDate,
+      "priorDates": {},
+      "nextDate": "",
       "increment": increment
     })
   });
@@ -186,17 +213,46 @@ function updateCar(userRef, uid, carName, make, model, year, level) {
     }
 }
 
-function addPriorDate(userRef, uid, carName, serviceName, priorDate) {
-  var ref = userRef.child(uid).child("Garage").child(carName).child("Service List").child(serviceName);
-  var priorDatesList;
-  ref.once("value").then(function(snapshot){
-    priorDatesList = snapshot.val().priorDates;
-    priorDatesList.unshift(priorDate);
-    console.log(priorDatesList);
-    ref.update({
-      "priorDates": priorDatesList
+function addPriorDate(userRef, uid, carName, serviceName, priorDate, price, location) {
+  var ref = userRef.child(uid).child("Garage").child(carName).child("Service List").child(serviceName).child("priorDates");
+	var list = {};
+	list[priorDate]={};
+	ref.once("value").then(function(snapshot){
+		if(price!=undefined) {
+			list["price"] = price;
+		}
+		else {
+			list["price"] = "null";
+		}
+		list["location"] = {};
+		if(location.address!=undefined) {
+			list["location"]["address"] = location.address;
+		}
+		if(location.lat!=undefined&&location.long!=undefined) {
+			list["location"]["lat"] = location.lat;
+			list["location"]["long"] = location.long;
+		}
+		ref.update({
+      [priorDate]:list
     });
   });
+}
+
+function getLatestPriorDate(userRef, uid, carName, serviceName, callback) {
+	var ref = userRef.child(uid).child("Garage").child(carName).child("Service List").child(serviceName).child("priorDates");
+	var min = new Date(1950,0,1);
+	var latest="";
+	ref.once("value").then(function(snapshot) {
+	 	snapshot.forEach(function(childSnapshot) {
+			key=childSnapshot.key;
+			var date=new Date(key.substring(0,4),key.substring(key.indexOf('-')+1,key.lastIndexOf('-'))-1,key.substring(key.lastIndexOf('-')+1));
+			if((date-min)>0) {
+				min=date;
+				latest=key;
+			}
+		});
+		callback(latest);
+	});
 }
 
 function updateNextDate(userRef, uid, carName, serviceName, nextDate) {
@@ -205,3 +261,220 @@ function updateNextDate(userRef, uid, carName, serviceName, nextDate) {
     "nextDate": nextDate
   });
 }
+
+function getEmailId(userRef, uid, callback) {
+	var ref = userRef.child(uid).child("email");
+	ref.once("value").then(function(snapshot) {
+		emailId = snapshot.val();
+		console.log("Email Id: "+emailId);
+		callback(emailId);
+	});
+}
+
+function resetPassword(userRef, uid, oldPassword, newPassword, callback) {
+  var ref = userRef.child(uid).child("password");
+  var correctPassword;
+  ref.once("value").then(function(snapshot) {
+    correctPassword = snapshot.val();
+		console.log(correctPassword+" "+oldPassword);
+    if (oldPassword == correctPassword) {
+			userRef.child(uid).update({
+		    "password": newPassword
+		  });
+			callback(true);
+    }
+    else {
+			callback(false);
+    }
+  });
+}
+
+function changePassword(userRef, uid, newPassword, callback) {
+  var ref = userRef.child(uid);
+	if(newPassword!="undefined") {
+		ref.update({
+			"password": newPassword
+		});
+		callback(true);
+	}
+	else {
+		callback(false);
+	}
+}
+
+function forgotPassword(userRef, email, callback) {
+  var ref = userRef;
+	var found=false;
+	ref.once("value").then(function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+  		uid=childSnapshot.key;
+			var ref2=userRef.child(uid);
+			ref2.once("value").then(function(babySnapshot) {
+				var emailId=babySnapshot.val().email;
+				var name=babySnapshot.firstname;
+				if(emailId === email) {
+          uid=childSnapshot.key;
+					found=true;
+          //console.log(uid)
+          //console.log(emailId)
+          var data = {
+            service_id: 'gmail',
+            template_id: 'forgot_password',
+            user_id: 'user_dIUsSOu0uyfAzEOurtMFv',
+            template_params: {
+              "email":email,
+              "name":name,
+              "action_url":("https://carkeeper-90b76.firebaseapp.com/home/forgot/"+uid)
+            }
+          };
+          axios.post('https://api.emailjs.com/api/v1.0/email/send',{
+            ...data,
+          }).catch((e)=>{
+            console.log(e);
+            callback(false);
+          })
+					callback(true);
+          return;
+				}
+			});
+		});
+		setTimeout(function() {
+			if(!found)
+			callback(false);
+		},1000);
+	});
+}
+
+
+function updateUser(userRef, uid, firstname, lastname, phone, notifPhone, notifEmail) {
+  var ref = userRef.child(uid);
+    if (firstname != "undefined") {
+      ref.update({
+        "firstname": firstname
+      });
+    }
+		if (lastname != "undefined") {
+      ref.update({
+        "lastname": lastname
+      });
+    }
+		if (phone != "undefined") {
+      ref.update({
+        "phone": phone
+      });
+    }
+		if (notifEmail != "undefined") {
+      ref.update({
+        "notifEmail": notifEmail
+      });
+    }
+		if (notifPhone != "undefined") {
+      ref.update({
+        "notifPhone": notifPhone
+      });
+    }
+}
+
+function removeUser(userRef, uid, password, callback) {
+	var ref = userRef.child(uid);
+	verifyUser(userRef, uid, password, (x) => {
+			if(x) {
+				ref.remove();
+				callback(true);
+			}
+			else {
+				callback(false);
+			}
+	});
+}
+
+function getUser(userRef, uid, callback) {
+  var ref = userRef.child(uid);
+  ref.once("value").then(function(snapshot) {
+		var json = {"email": snapshot.val().email, "firstname": snapshot.val().firstname, "lastname": snapshot.val().lastname, "phone": snapshot.val().phone, "notifPhone": snapshot.val().notifPhone, "notifEmail": snapshot.val().notifEmail};
+		callback(json);
+	});
+}
+
+function checkNotif(userRef, uid) {
+	var ref = userRef.child(uid).child("Garage");
+	var json = {};
+	var servicesDue="";
+	var numServicesDue=0;
+	var dateDue;
+	ref.once("value").then(function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        var key = childSnapshot.key;
+				var b=true;
+				var b2=false;
+				if (key != "carCount") {
+					getCar(userRef, uid, key, (services)=> {
+							for(var service in services) {
+								var dt = services[service]["nextDate"];
+								var nextD = new Date(dt.substring(0,4),dt.substring(dt.indexOf('-')+1,dt.lastIndexOf('-'))-1,dt.substring(dt.lastIndexOf('-')+1));
+								var today = new Date();
+								var dif = Math.floor((Date.UTC(nextD.getFullYear(), nextD.getMonth(), nextD.getDate()) - Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) ) /(1000 * 60 * 60 * 24));
+								if(dif==1) {
+									dateDue=dt;
+									b2=true;
+									if(b) {
+										b=false;
+										servicesDue += key+": "+service+", ";
+									}
+									else {
+										servicesDue+=service+", ";
+									}
+									numServicesDue++;
+								}
+							}
+							if(b2) {
+								servicesDue = servicesDue.substring(0,servicesDue.length-2);
+								servicesDue+=";  ";
+
+							}
+						});
+
+				}
+    	});
+  	});
+		setTimeout(function() {
+			if(numServicesDue>0) {
+ 				getUser(userRef, uid, (user) => {
+ 					var data = {
+ 						service_id: 'gmail',
+ 						template_id: 'service_soon',
+ 						user_id: 'user_dIUsSOu0uyfAzEOurtMFv',
+ 						template_params: {
+ 							"email":user["email"],
+ 							"service":servicesDue,
+ 							"name":user["firstname"],
+ 							"date":dateDue,
+ 							"action_url":"bit.ly/CarKeeper"
+ 						}
+ 					}
+ 					axios.post('https://api.emailjs.com/api/v1.0/email/send',{
+           	...data,
+         	}).catch((e)=>{
+           console.log(e);
+				 })
+
+         client.messages.create({
+             body: 'You have a service due tomorrow for ' + servicesDue,
+             to: '+1' + user["phone"],
+             from: '+18315349182'
+         })
+         .then((message) => console.log(message.sid));
+
+				 return;
+ 				});
+ 			}
+		},1000);
+	}
+
+	function checkAllNotif(userRef) {
+		userRef.once("value").then(function(snapshot) {
+	  	snapshot.forEach(function(childSnapshot) {
+	    	checkNotif(userRef,childSnapshot.key);
+			});
+		});
+	}
