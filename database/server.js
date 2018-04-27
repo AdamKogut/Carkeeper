@@ -447,9 +447,11 @@ app.listen(port, function () {
   console.log('Testing begins, check database');
   test();
   console.log('Testing done');
-
   console.log('Database setup done');
   console.log('App listening on port: ' + port + '!');
+  setInterval(function() {
+    database.checkAllNotif(userRef);
+  }, 1000*60*60*24);
 });
 
 // error handler
